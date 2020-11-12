@@ -1,0 +1,274 @@
+﻿<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#006680">
+    <meta name="description" content="An application for tombola drawings.">
+    <meta name="keywords" content="tombola, raffle, drawings, sampling without replacement">
+    <meta name="author" content="Geir Ove Nesvik">
+
+    <title>Tombola Draw</title>
+
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="css/tombola.css" async>
+    <link rel="apple-touch-icon" href="images/top-hat-001-ap.png" async>
+    <link rel="shortcut icon" href="images/tophat-icon-teal.svg" async>
+</head>
+<body id="app">
+
+    <div id="menu-dropdown-hover" class="advert-mode">
+        <button id="menu-icon" class="hover-effect">&#9776;</button>
+        <div id="menu-dropdown-content">
+            <div class="menu-line" onclick="document.querySelector('#confirm').style.display='block'">Reset</div>
+            <div class="menu-line" onclick="document.querySelector('#mixingTime').style.display='block'">Set disclosure time</div>
+            <div class="menu-line" id="review-button" onclick="startReview()">Review inputs</div>
+            <div class="menu-line" onclick="document.querySelector('#about').style.display='block'">About</div>
+        </div>
+    </div>
+
+    <!-- Ticket registration -->
+
+    <div id="registration">
+
+        <!--
+        <div id="advert-top" class="advert"></div>
+        <div id="advert-left" class="advert"></div>
+        <div id="advert-right" class="advert"></div>
+        -->
+
+        <h1 id="page-heading">TICKET REGISTRATION</h1>
+        <p id="read-only">READ ONLY MODE</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Color</th>
+                    <th>A-Z</th>
+                    <th>First</th>
+                    <th>Last</th>
+                    <th>Number</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                <tr class="formItem">
+
+                    <td class="item-no">1</td>
+
+                    <td data-label="Color">
+                        <select class="select-color" aria-label="color">
+                            <optgroup label="Pale">
+                            <option class="tombola-pale-blue" value="tombola-pale-blue" selected>Pale&nbsp;Blue</option>
+                            <option class="tombola-pale-green" value="tombola-pale-green">Pale&nbsp;Green</option>
+                            <option class="tombola-pale-red" value="tombola-pale-red">Pale&nbsp;Red</option>
+                            <option class="tombola-pale-yellow" value="tombola-pale-yellow">Pale&nbsp;Yellow</option>
+                            </optgroup>
+                            <optgroup label="Bright">
+                            <option class="tombola-bright-blue" value="tombola-bright-blue">Bright&nbsp;Blue</option>
+                            <option class="tombola-bright-green" value="tombola-bright-green">Bright&nbsp;Green</option>
+                            <option class="tombola-bright-red" value="tombola-bright-red">Bright&nbsp;Red</option>
+                            <option class="tombola-bright-yellow" value="tombola-bright-yellow">Bright&nbsp;Yellow</option>
+                            </optgroup>
+                            <optgroup label="Mixed">
+                            <option class="tombola-brown" value="tombola-brown">Brown</option>
+                            <option class="tombola-orange" value="tombola-orange">Orange</option>
+                            <option class="tombola-purple" value="tombola-purple">Purple</option>
+                            <option class="tombola-teal" value="tombola-teal">Teal</option>
+                            </optgroup>
+                            <optgroup label="Grayscale">
+                            <option class="tombola-black" value="tombola-black">Black</option>
+                            <option class="tombola-gray" value="tombola-gray">Gray</option>
+                            <option class="tombola-silver" value="tombola-silver">Silver</option>
+                            <option class="tombola-white" value="tombola-white">White</option>
+                            </optgroup>
+                        </select>
+                    </td>
+
+                    <td data-label="A-Z">
+                        <select class="select-letter" aria-label="letter">
+                            <option label=""></option>
+                            <option>A</option>
+                            <option>B</option>
+                            <option>C</option>
+                            <option>D</option>
+                            <option>E</option>
+                            <option>F</option>
+                            <option>G</option>
+                            <option>H</option>
+                            <option>I</option>
+                            <option>J</option>
+                            <option>K</option>
+                            <option>L</option>
+                            <option>M</option>
+                            <option>N</option>
+                            <option>O</option>
+                            <option>P</option>
+                            <option>Q</option>
+                            <option>R</option>
+                            <option>S</option>
+                            <option>T</option>
+                            <option>U</option>
+                            <option>V</option>
+                            <option>W</option>
+                            <option>X</option>
+                            <option>Y</option>
+                            <option>Z</option>
+                        </select>
+                    </td>
+
+                    <td data-label="First">
+                        <input type="number" class="first-number"
+                            aria-label="first" min=1 max=99999 value=1>
+                    </td>
+
+                    <td data-label="Last">
+                        <input type="number" class="last-number"
+                            aria-label="last" min=1 max=99999>
+                    </td>
+
+                    <td class="num-tickets" data-label="Number">0</td>
+
+                    <td><span class="status-light"></span></td>
+
+                    <td class="cancel-x remove-item">&#10006;</td>
+                </tr>
+            </tbody>
+
+            <tfoot>
+                <tr>
+                    <td></td>
+                    <td id="totalLabel" class="tabCell" colspan="4">In total</td>
+                    <td id="totalNo" class="tabCell">0</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tfoot>
+
+        </table>
+
+        <div id="registrationButtons" class="buttonRow">
+            <button id="add" class="buttonSet hover-effect">ADD</button>
+            <button id="ready" class="buttonSet hover-effect">READY</button>
+            <button id="close" class="buttonSet hover-effect">CLOSE</button>
+        </div>
+
+    </div>
+
+    <!--Presentation of the winner tickets -->
+
+    <div id="winner-ticket">
+
+        <!-- Winner number -->
+        <div id="ticket-text">
+            <img src="images/tombola-splash-001.webp" alt="Splash screen" style="width:50vmin" class="w3-card-4">
+        </div>
+        <div id="logItem">&nbsp;</div>
+        <div id="repetition">R</div>
+
+        <!-- Icons and commands at the bottom of the app -->
+        <div id="ticketButtons" class="buttonRow">
+            <button id="prev" class="button-left hover-effect">&#10094;</button>
+            <button id="regret" class="buttonSet hover-effect">BACK</button>
+            <button id="draw"  class="buttonSet hover-effect">DRAW</button>
+            <button id="next" class="button-right hover-effect">&#10095;</button>
+        </div>
+    </div>
+
+    <!--Spin the mixing wheel -->
+    <div id="spinner-panel">
+        <span class="spinner">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </span>
+    </div>
+
+    <!-- Error message -->
+    <div id="alert" class="w3-modal">
+        <div class="w3-modal-content w3-animate-top w3-card-4">
+            <header class="w3-container tombola-bright-red">
+                <span onclick="document.getElementById('alert').style.display='none'"
+                    class="w3-button w3-display-topright">&#10006;</span>
+                <h2>Error!</h2>
+            </header>
+            <div class="w3-container">
+                <p id="alert-text"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation before resetting the app -->
+    <div id="confirm" class="w3-modal">
+        <div class="w3-modal-content w3-animate-top w3-card-4">
+            <header class="w3-container tombola-orange">
+                <span onclick="document.getElementById('confirm').style.display='none'"
+                    class="w3-button w3-display-topright">&#10006;</span>
+                <h2>Warning!</h2>
+            </header>
+            <div class="w3-container">
+                <p>This will end the current drawing and reset the app?</p>
+                <p>Are you sure?</p>
+                <button class="w3-button" onclick="resetApp()">Yes</button>
+                <button class="w3-button" onclick="document.getElementById('confirm').style.display='none'">No</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Set the mixing time, i.e. the waiting time before a new ticket is shown. -->
+    <div id="mixingTime" class="w3-modal">
+        <div class="w3-modal-content w3-animate-top w3-card-4">
+            <header class="w3-container tombola-teal">
+                <span onclick="resetMixingTime();"
+                    class="w3-button w3-display-topright">&#10006;</span>
+                <h2>Set disclosure time</h2>
+            </header>
+            <div class="centerElements">
+                <input type="range" min="0" max="6" value="3" step="0.5" class="slider" id="select-seconds">                        
+                <div><span id="mixTime"></span> s</div>
+            </div>
+            <button class="w3-button" onclick="confirmMixingTime();">Confirm</button>
+        </div>
+    </div>
+
+    <!-- About the app -->    
+    <div id="about" class="w3-modal">
+        <div class="w3-modal-content w3-animate-top w3-card-4">
+            <header class="w3-container tombola-bright-blue">
+                <span onclick="document.getElementById('about').style.display='none'"
+                    class="w3-button w3-display-topright">&#10006;</span>
+                <h2>Information</h2>
+            </header>
+            <div class="w3-container">
+                <p>Tombola Draw<br>
+                By Geir Ove Nesvik<br>
+                Version: 3.1.3</p>
+                <p>
+                An app for providing fair ticket drawings.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Time consuming scripts -->
+    <script src="js/main.js" async></script>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker
+                    .register('/sw.js')
+                    .then(ref => console.log('Service worker registered'))
+                    .catch(err => console.log(`Service worker failed with ${err}`))
+            })
+        }
+    </script>
+
+</body>
+</html>
