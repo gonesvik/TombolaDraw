@@ -1,0 +1,5 @@
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target" : { "namespace": "android_app", "package_name": "app.web.tombola_draw_8bcfb.twa",
+                   "sha256_cert_fingerprints": ["69:0E:00:8F:21:41:B1:02:1D:EB:42:1D:23:9A:D5:9D:78:9A:23:40:8A:E7:98:C7:16:C3:A9:45:E0:8A:05:AB"] }
+    }]
