@@ -14,7 +14,7 @@
    preserveAspectRatio="xMinYMin meet"
    id="svg54"
    sodipodi:docname="tombola-splash-001.svg"
-   inkscape:version="0.92.4 (5da689c313, 2019-01-14)">
+   inkscape:version="1.0.1 (3bc2e813f5, 2020-09-07)">
   <defs
      id="defs58" />
   <sodipodi:namedview
@@ -26,17 +26,18 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="1653"
-     inkscape:window-height="963"
+     inkscape:window-width="1471"
+     inkscape:window-height="796"
      id="namedview56"
      showgrid="false"
-     inkscape:zoom="0.69140625"
-     inkscape:cx="194.14376"
-     inkscape:cy="406.46472"
-     inkscape:window-x="0"
-     inkscape:window-y="0"
+     inkscape:zoom="0.48889805"
+     inkscape:cx="456.19188"
+     inkscape:cy="248.39108"
+     inkscape:window-x="289"
+     inkscape:window-y="19"
      inkscape:window-maximized="0"
-     inkscape:current-layer="svg54" />
+     inkscape:current-layer="svg54"
+     inkscape:document-rotation="0" />
   <metadata
      id="metadata2">Created by potrace 1.15, written by Peter Selinger 2001-2017
 <rdf:RDF>
@@ -45,7 +46,7 @@
     <dc:format>image/svg+xml</dc:format>
     <dc:type
        rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-    <dc:title></dc:title>
+    <dc:title />
   </cc:Work>
 </rdf:RDF>
 </metadata>
@@ -62,12 +63,14 @@
      d="M 460.32032,253.66422 A 204.33476,196.4897 0 0 1 258.46136,452.47544 204.33476,196.4897 0 0 1 51.680454,258.39794 204.33476,196.4897 0 0 1 253.47399,59.525314 204.33476,196.4897 0 0 1 460.31875,253.53989"
      sodipodi:open="true" />
   <rect
-     x="1.0847381"
-     y="0.66948396"
-     width="512"
-     height="512"
+     x="0.27306432"
+     y="-0.29207763"
+     width="511.99936"
+     height="511.99588"
      id="rect4"
-     style="fill:#006680;fill-opacity:1;stroke-width:0" />
+     style="fill:#006680;fill-opacity:1;stroke-width:0"
+     transform="matrix(0.99999941,0.0010821,-0.00106618,0.99999943,0,0)"
+     ry="0" />
   <flowRoot
      transform="translate(0,312)"
      fill="#000000"
@@ -85,7 +88,8 @@
          width="88.136"
          height="39.407"
          id="rect6" /></flowRegion><flowPara
-       id="flowPara10" /></flowRoot>  <flowRoot
+       id="flowPara10" /></flowRoot>
+  <flowRoot
      transform="translate(0,312)"
      fill="#000000"
      font-family="sans-serif"
@@ -102,7 +106,8 @@
          width="170.34"
          height="80.508"
          id="rect14" /></flowRegion><flowPara
-       id="flowPara18" /></flowRoot>  <flowRoot
+       id="flowPara18" /></flowRoot>
+  <flowRoot
      transform="translate(0,312)"
      fill="#000000"
      font-family="sans-serif"
@@ -119,7 +124,8 @@
          width="3.3898"
          height="57.627"
          id="rect22" /></flowRegion><flowPara
-       id="flowPara26" /></flowRoot>  <flowRoot
+       id="flowPara26" /></flowRoot>
+  <flowRoot
      transform="translate(0,312)"
      fill="#000000"
      font-family="sans-serif"
@@ -136,7 +142,8 @@
          width="329.58"
          height="176.78"
          id="rect30" /></flowRegion><flowPara
-       id="flowPara34" /></flowRoot>  <path
+       id="flowPara34" /></flowRoot>
+  <path
      sodipodi:nodetypes="ccccccccccccccccc"
      inkscape:connector-curvature="0"
      id="path4191"
@@ -154,17 +161,17 @@
      font-size="115.54px"
      letter-spacing="0px"
      word-spacing="0px"
-     style="font-size:202.30725098px;line-height:125%;font-family:'Cooper Black';letter-spacing:0px;word-spacing:0px;fill:#fff6d5;fill-opacity:1;stroke:#000000;stroke-width:5.25297022;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     style="font-size:202.307px;line-height:125%;font-family:'Cooper Black';letter-spacing:0px;word-spacing:0px;fill:#fff6d5;fill-opacity:1;stroke:#000000;stroke-width:5.25297;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
      xml:space="preserve"
      id="text42"><tspan
        x="68.223442"
        y="48.796864"
        id="tspan38"
-       style="fill:#fff6d5;fill-opacity:1;stroke:#000000;stroke-width:5.25297022;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" /><tspan
+       style="fill:#fff6d5;fill-opacity:1;stroke:#000000;stroke-width:5.25297;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" /><tspan
        x="68.223442"
        y="301.68304"
        id="tspan40"
-       style="fill:#fff6d5;fill-opacity:1;stroke:#000000;stroke-width:5.25297022;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1">Draw</tspan></text>
+       style="fill:#fff6d5;fill-opacity:1;stroke:#000000;stroke-width:5.25297;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1">Draw</tspan></text>
   <text
      transform="scale(0.78894722,1.2675119)"
      x="62.969646"
@@ -172,13 +179,13 @@
      font-size="69.404px"
      letter-spacing="0px"
      word-spacing="0px"
-     style="font-size:121.05925751px;line-height:125%;font-family:'Cooper Black';letter-spacing:0px;word-spacing:0px;fill:#008080;stroke:#000000;stroke-width:5.23279953;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     style="font-size:121.059px;line-height:125%;font-family:'Cooper Black';letter-spacing:0px;word-spacing:0px;fill:#008080;stroke:#000000;stroke-width:5.2328;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
      xml:space="preserve"
      id="text46"><tspan
        x="62.969646"
        y="173.31116"
        id="tspan44"
-       style="fill:#aaeeff;stroke:#000000;stroke-width:5.23279953;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1">Tombola</tspan></text>
+       style="fill:#aaeeff;stroke:#000000;stroke-width:5.2328;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1">Tombola</tspan></text>
   <g
      transform="matrix(.15414 -.00028461 -.00031257 -.14035 -362.5 578.46)"
      fill="#fff"
