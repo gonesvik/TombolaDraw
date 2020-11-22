@@ -196,8 +196,8 @@ function drawTicket() {
             drawHistory.push(tickets[winner]);
             document.getElementById('logItem').innerHTML = drawHistory.length;
 
-            document.getElementById('ticket-text').classList.remove('w3-animate-left', 'w3-animate-right','w3-animate-zoom')
-            document.getElementById('ticket-text').classList.add('w3-animate-zoom');
+            document.getElementById('ticket-text').classList.remove('w3-animate-left', 'w3-animate-right','w3-ease-out')
+            document.getElementById('ticket-text').classList.add('w3-ease-out');
 
             setColorClass (canvas, tickets[winner][0]);
             menu_icon.style.color = getComputedStyle(canvas).color;
@@ -266,7 +266,7 @@ function endReview() {
 
     document.getElementById('menu-icon').style.color = getComputedStyle(document.getElementById('ticket-text')).color;
 
-    document.querySelector('#ticket-text').classList.remove('w3-animate-left', 'w3-animate-right','w3-animate-zoom');
+    document.querySelector('#ticket-text').classList.remove('w3-animate-left', 'w3-animate-right','w3-ease-out');
 
     var selection = document.querySelectorAll('.buttonSet');
     for (var i = 0; i < selection.length; i++) {
@@ -546,7 +546,7 @@ function resetApp() {
     selection = document.getElementById('ticket-text');
     selection.innerHTML = '<img src="images/tombola-splash-001.webp" alt="Splash screen" style="width:50vmin" class="w3-card-4">';
     selection.style.fontSize = '25vmin';
-    selection.classList.remove('w3-animate-left', 'w3-animate-right','w3-animate-zoom');
+    selection.classList.remove('w3-animate-left', 'w3-animate-right','w3-ease-out');
 
     document.getElementById('logItem').innerHTML = '&nbsp';
     document.getElementsByClassName('num-tickets')[0].innerHTML = '0';
@@ -610,7 +610,7 @@ function traverseHistory(incr) {
     // Show a big R to remind the user that this is a repetition
     document.getElementById('repetition').style.visibility = 'visible';
     document.getElementById('ticket-text').innerHTML =  drawHistory[historyIndex][1].toString();
-    document.getElementById('ticket-text').classList.remove('w3-animate-left', 'w3-animate-right','w3-animate-zoom');
+    document.getElementById('ticket-text').classList.remove('w3-animate-left', 'w3-animate-right','w3-ease-out');
     if (incr < 0) {
       document.getElementById('ticket-text').classList.add('w3-animate-left');
     } else {
