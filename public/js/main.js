@@ -11,22 +11,23 @@ var historyIndex = -1;           // Index number for drawn tickets
 var overlaps = [new Set().add(NaN)];  // NaN indicates an incomplete record
 var timer;                       // Variable for controlling timout of spinner.
 var color_classes = [
-    'tombola-pale-blue', 'tombola-pale-green', 'tombola-pale-red', 'tombola-pale-yellow',
-    'tombola-bright-blue', 'tombola-bright-green', 'tombola-bright-red', 'tombola-bright-yellow',
-    'tombola-brown', 'tombola-orange', 'tombola-purple', 'tombola-teal',
-    'tombola-black', 'tombola-gray', 'tombola-silver', 'tombola-white', 'tombola-whitesmoke'
+    'color-pale-blue', 'color-pale-green', 'color-pale-red', 'color-pale-yellow',
+    'color-bright-blue', 'color-bright-green', 'color-bright-red', 'color-bright-yellow',
+    'color-brown', 'color-orange', 'color-purple', 'color-teal',
+    'color-black', 'color-gray', 'color-silver', 'color-paper', 'color-whitesmoke',
+    'color-aluminium', 'color-gold', 'color-wood'
 ];
 
 // Tombola Draw code
 
 var slider = document.getElementById("select-seconds");
-var output = document.getElementById("mixTime");
+var mixingTime = document.getElementById("mixTime");
 var color_index = 0;
 
-output.innerHTML = parseFloat(slider.value).toFixed(1);
+mixingTime.innerHTML = parseFloat(slider.value).toFixed(1);
 
 slider.oninput = function() {
-    output.innerHTML = parseFloat(this.value).toFixed(1);
+    mixingTime.innerHTML = parseFloat(this.value).toFixed(1);
 }
 
 setColorClass(document.getElementsByClassName('formItem')[0], 'unspecified');
@@ -67,7 +68,7 @@ function addItem () {
     new_child.querySelector('.item-no').innerHTML = form_tab.querySelectorAll('tr').length+1;
     new_child.querySelector('.first-number').value = '1';
     new_child.querySelector('.last-number').value = null;
-    new_child.querySelector('.status-light').style.backgroundColor = 'Orange';
+    new_child.querySelector('.status-light').style.backgroundColor = 'orange';
     new_child.querySelector('.num-tickets').innerHTML = '0';
     form_tab.appendChild(new_child);
 
@@ -196,8 +197,7 @@ function drawTicket() {
             drawHistory.push(tickets[winner]);
             document.getElementById('logItem').innerHTML = drawHistory.length;
 
-            document.getElementById('ticket-text').classList.remove('w3-animate-left', 'w3-animate-right','w3-ease-out')
-            document.getElementById('ticket-text').classList.add('w3-ease-out');
+            document.getElementById('ticket-text').classList.add('w3-fade-in');
 
             setColorClass (canvas, tickets[winner][0]);
             menu_icon.style.color = getComputedStyle(canvas).color;
@@ -240,6 +240,7 @@ function startReview() {
     // Switch page
     // document.getElementById('menu-dropdown-content').style.display = 'none';
     document.getElementById('winner-ticket').style.display = 'none';
+    document.getElementsByTagName('html')[0].style.backgroundColor = 'beige';
     document.querySelector('#menu-dropdown-hover').classList.add('advert-mode');
    
     /* document.getElementById('spinner-panel').style.display = 'none'; */
@@ -263,10 +264,9 @@ function endReview() {
     document.getElementById('registration').style.display = 'none';
     document.getElementById('winner-ticket').style.display = 'flex';
     document.querySelector('#menu-dropdown-hover').classList.remove('advert-mode');
+    document.getElementsByTagName('html')[0].style.backgroundColor = 'whitesmoke';
 
     document.getElementById('menu-icon').style.color = getComputedStyle(document.getElementById('ticket-text')).color;
-
-    document.querySelector('#ticket-text').classList.remove('w3-animate-left', 'w3-animate-right','w3-ease-out');
 
     var selection = document.querySelectorAll('.buttonSet');
     for (var i = 0; i < selection.length; i++) {
@@ -292,7 +292,7 @@ function confirmMixingTime() {
 
     disclosureTime = document.querySelector('#select-seconds').value;
     // Close page
-    document.getElementById('mixingTime').style.display = 'none';
+    document.getElementById('mixTimeCard').style.display = 'none';
 
 }
 
@@ -302,7 +302,7 @@ function resetMixingTime() {
     document.querySelector('#select-seconds').value = disclosureTime;
     document.querySelector('#mixTime').innerHTML = disclosureTime;
     // Close page
-    document.getElementById('mixingTime').style.display = 'none';
+    document.getElementById('mixTimeCard').style.display = 'none';
 
 }
 
@@ -383,6 +383,7 @@ function registerTickets() {
     document.getElementById('page-heading').innerHTML = 'REGISTERED TICKETS';
     document.getElementById('read-only').style.display = 'grid';
     document.getElementById('review-button').style.opacity = '1.0';
+    document.getElementById('extra-info').style.display = 'inline-block';
     
     // selection = document.getElementById('advert').style.display = 'none';
     selection = document.getElementById('registration');
@@ -426,7 +427,8 @@ function regretRegistration() {
     document.getElementById('page-heading').innerHTML = 'REGISTER TICKETS';
     document.getElementById('read-only').style.display = 'none';
     document.getElementById('review-button').style.opacity = '0.3';
-    
+    document.getElementById('extra-info').style.display = 'none';
+   
     // selection = document.getElementById('advert').style.display = 'none';
     selection = document.getElementById('registration');
     selection.scrollTop = 0;
@@ -502,19 +504,22 @@ function resetApp() {
 
     // Stop spinner
     clearTimeout(timer);
+    document.getElementsByTagName('html')[0].style.backgroundColor = 'whitesmoke';
     document.getElementById('spinner-panel').style.display='none';
      
     // Hide confirm card
-    document.getElementById('confirm').style.display='none';
+    document.getElementById('confirm').style.display = 'none';
 
     // Switch page
     document.getElementById('registration').style.display = 'block';
     document.getElementById('winner-ticket').style.display = 'none';
+    setColorClass(document.getElementById('winner-ticket'), 'color-whitesmoke');
 
     document.querySelector('#menu-dropdown-hover').classList.add('advert-mode');
 
     document.getElementById('page-heading').innerHTML = 'TICKET REGISTRATION';
     document.getElementById('read-only').style.display = 'none';
+    document.getElementById('extra-info').style.display = 'none';
 
     // Remove all but one input items
     var selection = document.getElementsByClassName('formItem');
@@ -540,13 +545,12 @@ function resetApp() {
     document.getElementsByClassName('status-light')[0].style.backgroundColor = 'Orange';
 
     selection = document.getElementById('winner-ticket');
-    selection.style.backgroundColor = 'transparent';
     selection.style.color = 'black';
+    selection.style.backgroundColor = 'transparent';
 
     selection = document.getElementById('ticket-text');
-    selection.innerHTML = '<img src="images/tombola-splash-001.webp" alt="Splash screen" style="width:50vmin" class="w3-card-4">';
+    selection.innerHTML = '<img src="images/tombola-splash-001.webp" alt="Splash screen" style="width:50vmin" class="w3-card-4 w3-fade-in">';
     selection.style.fontSize = '25vmin';
-    selection.classList.remove('w3-animate-left', 'w3-animate-right','w3-ease-out');
 
     document.getElementById('logItem').innerHTML = '&nbsp';
     document.getElementsByClassName('num-tickets')[0].innerHTML = '0';
@@ -609,13 +613,7 @@ function traverseHistory(incr) {
     setColorClass(document.getElementById('winner-ticket'), drawHistory[historyIndex][0]);
     // Show a big R to remind the user that this is a repetition
     document.getElementById('repetition').style.visibility = 'visible';
-    document.getElementById('ticket-text').innerHTML =  drawHistory[historyIndex][1].toString();
-    document.getElementById('ticket-text').classList.remove('w3-animate-left', 'w3-animate-right','w3-ease-out');
-    if (incr < 0) {
-      document.getElementById('ticket-text').classList.add('w3-animate-left');
-    } else {
-      document.getElementById('ticket-text').classList.add('w3-animate-right');
-    }
+    document.getElementById('ticket-text').innerHTML = drawHistory[historyIndex][1].toString();
 
     // Necessary hack to make CSS animation repeatable.
     var elem = document.getElementById('ticket-text');
@@ -641,7 +639,7 @@ document.addEventListener('input', function(e) {
 document.addEventListener('click', function(e) {
     if (e.target) {
 
-        if (e.target.id == 'add' /* || e.target.alt == 'add' */)
+        if (e.target.id == 'add')
             addItem();
         else if (e.target.classList.contains('remove-item'))
             removeItem(e.target);
@@ -708,7 +706,7 @@ function keyPressed(event) {
 
 // Change events //
 document.getElementById('registration').addEventListener('change', function(e) {
-    if(e.target) {
+    if (e.target) {
         if (e.target.className == 'select-color') {
 
             var selected_color = e.target.value;

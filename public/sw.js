@@ -1,2 +1,79 @@
-if(!self.define){const e=e=>{"require"!==e&&(e+=".js");let s=Promise.resolve();return r[e]||(s=new Promise(async s=>{if("document"in self){const r=document.createElement("script");r.src=e,document.head.appendChild(r),r.onload=s}else importScripts(e),s()})),s.then(()=>{if(!r[e])throw new Error(`Module ${e} didn’t register its module`);return r[e]})},s=(s,r)=>{Promise.all(s.map(e)).then(e=>r(1===e.length?e[0]:e))},r={require:Promise.resolve(s)};self.define=(s,i,o)=>{r[s]||(r[s]=Promise.resolve().then(()=>{let r={};const t={uri:location.origin+s.slice(1)};return Promise.all(i.map(s=>{switch(s){case"exports":return r;case"module":return t;default:return e(s)}})).then(e=>{const s=o(...e);return r.default||(r.default=s),r})}))}}define("./sw.js",["./workbox-e147cfff"],(function(e){"use strict";self.addEventListener("message",e=>{e.data&&"SKIP_WAITING"===e.data.type&&self.skipWaiting()}),e.precacheAndRoute([{url:"css/tombola.css",revision:"d1f2c9db612dba43c22b20564a9f4fa2"},{url:"images/tombola-splash-001.webp",revision:"18068cf3285ace105d8bc7d82e0e6e5d"},{url:"images/tombola-splash-002.png",revision:"4e9a43fd798eeb558f527951d94ce3d7"},{url:"images/top-hat-001-ap.png",revision:"2f84579288ada3c63dff437cf419bb04"},{url:"images/top-hat-001-lg.png",revision:"5367182e53a018a287c60f98c779577e"},{url:"images/top-hat-001-sm.png",revision:"9510c6220319ecf690351ed256f07668"},{url:"index.html",revision:"3bd2067800dfd93daaa5e751f1058941"},{url:"js/main.js",revision:"0bce6307e20f662c0c164c7d858bd0bc"},{url:"manifest.json",revision:"731e72cc881a57218f30db0d9d9a6f13"},{url:"robots.txt",revision:"d41d8cd98f00b204e9800998ecf8427e"}],{})}));
+if (!self.define) {
+    const e = e => {
+            "require" !== e && (e += ".js");
+            let s = Promise.resolve();
+            return r[e] || (s = new Promise(async s => {
+                if ("document" in self) {
+                    const r = document.createElement("script");
+                    r.src = e, document.head.appendChild(r), r.onload = s
+                } else importScripts(e), s()
+            })), s.then(() => {
+                if (!r[e]) throw new Error(`Module ${e} didn’t register its module`);
+                return r[e]
+            })
+        },
+        s = (s, r) => {
+            Promise.all(s.map(e)).then(e => r(1 === e.length ? e[0] : e))
+        },
+        r = {
+            require: Promise.resolve(s)
+        };
+    self.define = (s, i, o) => {
+        r[s] || (r[s] = Promise.resolve().then(() => {
+            let r = {};
+            const t = {
+                uri: location.origin + s.slice(1)
+            };
+            return Promise.all(i.map(s => {
+                switch (s) {
+                    case "exports":
+                        return r;
+                    case "module":
+                        return t;
+                    default:
+                        return e(s)
+                }
+            })).then(e => {
+                const s = o(...e);
+                return r.default || (r.default = s), r
+            })
+        }))
+    }
+}
+define("./sw.js", ["./workbox-e147cfff"], (function(e) {
+    "use strict";
+    self.addEventListener("message", e => {
+        e.data && "SKIP_WAITING" === e.data.type && self.skipWaiting()
+    }), e.precacheAndRoute([{
+        url: "css/tombola.css",
+        revision: "d1f2c9db612dba43c22b20564a9f4fa2"
+    }, {
+        url: "images/tombola-splash-001.webp",
+        revision: "18068cf3285ace105d8bc7d82e0e6e5d"
+    }, {
+        url: "images/tombola-splash-002.png",
+        revision: "4e9a43fd798eeb558f527951d94ce3d7"
+    }, {
+        url: "images/top-hat-001-ap.png",
+        revision: "2f84579288ada3c63dff437cf419bb04"
+    }, {
+        url: "images/top-hat-001-lg.png",
+        revision: "5367182e53a018a287c60f98c779577e"
+    }, {
+        url: "images/top-hat-001-sm.png",
+        revision: "9510c6220319ecf690351ed256f07668"
+    }, {
+        url: "index.html",
+        revision: "3bd2067800dfd93daaa5e751f1058941"
+    }, {
+        url: "js/main.js",
+        revision: "0bce6307e20f662c0c164c7d858bd0bc"
+    }, {
+        url: "site.webmanifest",
+        revision: "731e72cc881a57218f30db0d9d9a6f13"
+    }, {
+        url: "robots.txt",
+        revision: "d41d8cd98f00b204e9800998ecf8427e"
+    }], {})
+}));
 //# sourceMappingURL=sw.js.map
