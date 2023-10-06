@@ -238,10 +238,10 @@ function startReview() {
     document.getElementById('spinner-panel').style.display='none';
 
     // Switch page
-    // document.getElementById('menu-dropdown-content').style.display = 'none';
+    /*document.getElementById('menu-dropdown-content').style.display = 'none';*/
     document.getElementById('winner-ticket').style.display = 'none';
     document.getElementsByTagName('html')[0].style.backgroundColor = 'beige';
-    document.querySelector('#menu-dropdown-hover').classList.add('advert-mode');
+    // document.querySelector('#menu-dropdown-hover').classList.add('advert-mode');
    
     /* document.getElementById('spinner-panel').style.display = 'none'; */
     document.getElementById('menu-icon').style.color = 'black';
@@ -263,7 +263,7 @@ function endReview() {
     document.getElementById('registration').scrollTop = 0;
     document.getElementById('registration').style.display = 'none';
     document.getElementById('winner-ticket').style.display = 'flex';
-    document.querySelector('#menu-dropdown-hover').classList.remove('advert-mode');
+    // document.querySelector('#menu-dropdown-hover').classList.remove('advert-mode');
     document.getElementsByTagName('html')[0].style.backgroundColor = 'whitesmoke';
 
     document.getElementById('menu-icon').style.color = getComputedStyle(document.getElementById('ticket-text')).color;
@@ -364,7 +364,7 @@ function registerTickets() {
 
     ticketFontSize = String(24 + (7-maxlen)*4)+'vmin'; // 28,32,36,40,44,48,52vmin
 
-    document.querySelector('#menu-dropdown-hover').classList.remove('advert-mode');
+    // document.querySelector('#menu-dropdown-hover').classList.remove('advert-mode');
 
     selection = document.getElementsByTagName('input');
     for (var i = 0; i < selection.length; i++) selection[i].readOnly = true;
@@ -409,7 +409,7 @@ function regretRegistration() {
     var letter, color, from, to, label;
     var selection;
 
-    document.querySelector('#menu-dropdown-hover').classList.add('advert-mode');
+    // document.querySelector('#menu-dropdown-hover').classList.add('advert-mode');
 
     selection = document.getElementsByTagName('input');
     for (var i = 0; i < selection.length; i++) selection[i].readOnly = false;
@@ -515,7 +515,7 @@ function resetApp() {
     document.getElementById('winner-ticket').style.display = 'none';
     setColorClass(document.getElementById('winner-ticket'), 'color-whitesmoke');
 
-    document.querySelector('#menu-dropdown-hover').classList.add('advert-mode');
+    // document.querySelector('#menu-dropdown-hover').classList.add('advert-mode');
 
     document.getElementById('page-heading').innerHTML = 'TICKET REGISTRATION';
     document.getElementById('read-only').style.display = 'none';

@@ -21,9 +21,9 @@ button {
     margin-right: 10px;
 }
 
-    button:disabled {
-        display: none;
-    }
+button:disabled {
+    display: none;
+}
 
 html {
     direction: ltr;
@@ -113,7 +113,6 @@ select {
     font-size: 5vh;
     position: absolute;
     text-align: center;
-    z-index: 5;
 }
 
 #menu-dropdown-content {
@@ -123,32 +122,38 @@ select {
     display: none;
     position: absolute;
     min-width: 235px;
-    margin-left: 20px;
+    margin-left: 15px;
     padding: 10px 20px;
+    box-shadow: 0 4px 10px 0 rgba(0,0,0,0.2),0 4px 20px 0 rgba(0,0,0,0.2);
     z-index: 1;
-    box-shadow: 0 4px 10px 0 rgba(0,0,0,0.2),0 4px 20px 0 rgba(0,0,0,0.2)
 }
 
 #menu-dropdown-hover {
     position: absolute;
     display: inline-block;
     top: 5px;
-    z-index: 2
+    z-index: 2;
 }
 
-    #menu-dropdown-hover .menu-line {
-        display: block;
-        padding: 8px 16px;
-    }
+#menu-dropdown-hover .menu-line {
+    display: block;
+    padding: 8px 16px;
+}
 
-    #menu-dropdown-hover:hover #menu-dropdown-content {
-        display: block;
-        cursor: pointer;
-    }
+#menu-dropdown-hover:hover #menu-dropdown-content {
+    display: block;
+    cursor: pointer;
+}
 
-    #menu-dropdown-hover:hover .menu-line:hover {
-        background-color: rgba(0, 0, 0, 0.2);
-    }
+#menu-dropdown-hover:hover .menu-line:hover {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+/*
+#menu-dropdown-hover:hover {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+*/
 
 #menu-icon {
     font-size: 30px;
@@ -184,7 +189,6 @@ select {
     right: 1vw;
     top: 5px;
     visibility: hidden;
-    z-index: 5;
 }
 
 #splash-screen {
@@ -193,7 +197,6 @@ select {
 
 #ticket-text {
     font-size: 25vmin;
-    z-index: 1;
 }
 
 #page-heading {
@@ -211,7 +214,6 @@ select {
 #winner-ticket {
     display: none;
     height: 100vh;
-    display: none;
     align-items: center;
     justify-content: center;
     overflow: hidden;
@@ -235,7 +237,6 @@ select {
     position: fixed;
     bottom: 0px;
     text-align: center;
-    z-index: 3;
     height: 60px;
     width: 100%;
     align-items: center;
@@ -262,6 +263,10 @@ select {
     text-align: center;
 }
 
+.hiddenElement {
+    visibility: hidden;
+}
+
 .hover-effect:hover {
     background-color: rgba(0, 0, 0, 0.2);
 }
@@ -275,9 +280,9 @@ select {
     cursor: pointer;
 }
 
-    .remove-item:active {
-        opacity: 0.5;
-    }
+.remove-item:active {
+    opacity: 0.5;
+}
 
 .slider {
     width: 90%;
@@ -305,7 +310,7 @@ select {
 .color-bright-blue{color:white;background-color:blue;font-family:sans-serif}
 .color-bright-green{color:white;background-color:green;font-family:sans-serif}
 .color-bright-red{color:white;background-color:red;font-family:sans-serif}
-.color-bright-yellow{color:black;background-color:yellow;font-family:sans-serif}
+.color-bright-yellow{color:black;background-color:#FFF000;font-family:sans-serif}
 .color-brown{color:white;background-color:saddlebrown;font-family:sans-serif}
 .color-gray{color:white;background-color:gray;font-family:sans-serif}
 .color-orange{color:white;background-color:orange;font-family:sans-serif}
@@ -317,12 +322,12 @@ select {
 .color-silver{color:black;background-color:silver;font-family:sans-serif}
 .color-teal{color:white;background-color: teal;font-family:sans-serif}
 .color-whitesmoke{color:black;background-color:whitesmoke;font-family:sans-serif}
-.color-paper {color:midnightblue;background-color:whitesmoke;font-family:cursive;
+.color-paper {color:#000060;background-color:whitesmoke;font-family:cursive;
     background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwBAMAAAClLOS0AAAAG1BMVEUAAADs6uzk3tzc3tzs5uTk2tzk4uTk5uTc2ty2E9CcAAAAAXRSTlMAQObYZgAAAAlwSFlzAAAOxAAADsQBlSsOGwAAAzRJREFUOI0VVDtz3DYQxl84CgNfixVuxdYa5dFytbdGq5uT7BabFczak9GkJQMj97MDFySrD/iedOyr1OPyAVLkFRLfWgOSJTk7GJ8ht1futUbaddJ5rb46orjkunCfTQ4Y0F62hQbSqajhOUW/9mmlECYKjHtll+5B7f57SvZpU1nkhW2GScXhHphRn2U66VdDW69rxSrk6ocsQBnkKB0oGT/rEWz/zVmtLXmsJVXFJJdKIiXng9N9Eo4bKpjtlCqmwUDeXhxIYjrEcmlt+bngkIuGyjbo1nGZ+omq2sYedP9gPP8cAjHLlnu3fd2/CHJ9giw+upcjZRG/wgCw1UJPAzxgThMfUgwGfOSgql7eI7JUt6SeoD6lpDYfj3OHA+IymQ5WOxpc/1s20TU8nCisu8JHdwWGjZi20q9v7VCZKd7RUOXSMUe+FDSiYvP1xwTffykAp+d0+WJ1OitgpwUmUYJIwZGW6ov5smOPPdbbHJF+8O6wV4xp46UmGTJu4xPxMu6o9Kxqw9MUWFqeIJgeeBIHvo4wQj82Mth5ptOkVPvsdAL4BqvCOmFQyBWC/qHc3Awe4rsi//2w8qI1f7UUsjW3lqZ7K4/4TSQc4mGq6++zZ3WZvRABUVDaBvXE//q/1tGSe/oTWvfK55rSbZzbuqx831xGJV73KRi/oe6QOt0eDZpL/BlmDJY+lmMEGYbTlnITN+VoANRt1dyT7PNqpl+kOQswez/cVpp4S8EGOvYjuLdUw+DyK9vwCS7N2uE5vEN2Feq6+rgcyj8QNr2orneo+OYeZL6zEuYqQsk/wZ3sovUyCpcExlPDOXa18qx1eBbL4rrO8wkhU6+33pC4lEx6fnd0TtgXoSpG6+d8HaMJ5xGvG6u6T6Nx28cIGXI/fV5Hzzo6RJ1ekIcqBvvWcAIjNL+5U2oWrRQaK6lVW8F0ttEfR/xKmFrOlMpqnSaYazyl3S2sPLfpPoXEy/uvoSdZDthd3Tk9bqOD4zcBCDOjmZ+vuxOgp259ouNIyiJdQzV+oOo22zGrZSsqewrRhqE+HsmZ97mYPApUYlYMtM8QehnDQd/SeC00aF+7vzEN7vQ/PWI73Dk3Ze0AAAAASUVORK5CYII=);}
 .color-aluminium {color:#504A4B;background-color:silver;font-family:sans-serif;
     background-image:linear-gradient(grey 0%,whitesmoke 50%,grey 100%)
 }
-.color-gold {color:#C04000;background-color:gold;
+.color-gold {color:darkred;background-color:gold;
     background-image:linear-gradient(#DF9F28, #FDE08D, #8f6B29);font-family:sans-serif
 }
 .color-wood {color:saddlebrown;background-color:burlywood;font-family:sans-serif;
@@ -331,20 +336,17 @@ select {
         repeating-linear-gradient(-0.5deg,hsla(0,0%,80%,0) 0%, hsla(0,0%,100%,0) 1.3%, hsla(0,0%,100%,.15) 3.6%)
 }
 
-.w3-animate-left-out{position:relative;animation:animateleftout 1.0s}@keyframes animateleftout{from{left:0;opacity:1} to{left:300px;opacity:0}}
-.w3-animate-left{position:relative;animation:animateleft 1.0s}@keyframes animateleft{from{left:-300px;opacity:0} to{left:0;opacity:1}}
-.w3-animate-right{position:relative;animation:animateright 1.0s}@keyframes animateright{from{right:-300px;opacity:0} to{right:0;opacity:1}}
-.w3-animate-top{position:relative;animation:animatetop 0.4s}@keyframes animatetop{from{top:-300px;opacity:0} to{top:0;opacity:1}}
-.w3-fade-in{animation:fadeInAnimation 1.5s}@keyframes fadeInAnimation{0%{opacity:0}100%{opacity:1}}
-.w3-button{-webkit-touch-callout:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}   
+.w3-animate-top{position:relative;animation:animateTop 0.5s}@keyframes animateTop{from{transform: translateY(-200%);} to{transform: translateY(0%);}}
+.w3-fade-in{position:relative;animation:fadeInAnimation 1.0s}@keyframes fadeInAnimation{0%{opacity:0} 100%{opacity:1}}
+.w3-button{-webkit-touch-callout:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
 .w3-button{font-size:large;border:none;display:inline-block;padding:8px 16px;vertical-align:middle;overflow:hidden;text-decoration:none;color:inherit;background-color:inherit;text-align:center;cursor:pointer;white-space:nowrap}
 .w3-button:hover{color:#000!important;background-color:#ccc!important}
-.w3-card-4{box-shadow:0 4px 10px 0 rgba(0,0,0,0.4),0 4px 20px 0 rgba(0,0,0,0.3);}
-.w3-container{padding:0.01em 16px}.w3-panel{margin-top:16px;margin-bottom:16px}
 .w3-button:disabled{cursor:not-allowed;opacity:0.3}
+.w3-card-4{box-shadow:0 4px 10px 0 rgba(0,0,0,0.4),0 4px 20px 0 rgba(0,0,0,0.3);}
+.w3-container{padding:0.01em 16px;}.w3-panel{margin-top:16px;margin-bottom:16px}
 .w3-display-topright{position:absolute;right:0;top:0}
-.w3-modal-content{margin:auto;background-color:#fff;position:relative;padding:0;outline:0;max-width:600px}
-.w3-modal{z-index:3;display:none;padding-top:100px;position:fixed;left:0;top:0;width:100%;height:100%;overflow:auto;background-color:rgb(0,0,0);background-color:rgba(0,0,0,0.3)}
+.w3-modal-content{margin:auto;background-color:#fff;position:relative;padding:0;outline:0;max-width: 500px;}
+.w3-modal{display:none;padding-top:100px;position:fixed;left:0;top:0;width:100%;height:100%;overflow:auto;z-index:7;background-color:rgb(0,0,0);background-color:rgba(0,0,0,0.3)}
 
 /*** Media (screen < 600) ***/
 
@@ -421,15 +423,15 @@ select {
         margin-left: 0;
         float: left;
     }
+
+    .w3-modal-content {
+        max-width: 380px;
+    }
 }
 
 /*** Medias (screen <= 420) ***/
 
 @media screen and (max-width: 420px) {
-
-    #menu-dropdown-hover.advert-mode {
-        position: sticky;
-    }
 
     #registration h1 {
         font-size: 1.5em;
@@ -491,99 +493,10 @@ select {
             width: 4.2em;
         }
 
-    #advert-left {
-        display: none;
-    }
-
-    #advert-right {
-        display: none;
-    }
-
-    #advert-top {
-        height: 50px;
-        margin: auto;
-        width: 320px;
-        z-index: 1;
-        top: 0.4vh;
-        position: sticky;
-    }
-
     .status-light {
         height: 1.3em;
         width: 1.3em;
         margin-top: 5px;
-    }
-}
-
-/*** Media (800 <= screen < 1200)  ***/
-
-@media screen and (min-width: 800px) and (max-width: 1199px) {
-
-    #advert-left {
-        display: none;
-    }
-
-    #advert-right {
-        display: none;
-    }
-
-    #advert-top {
-        height: 100px;
-        margin: auto;
-        width: 640px;
-        z-index: 1;
-        top: 0.4vh;
-        position: sticky;
-    }
-}
-
-/*** Media (screen >= 1200) ***/
-
-@media screen and (min-width: 1200px) {
-
-    #advert-left {
-        float: left;
-        position: fixed;
-        height: 600px;
-        width: 160px;
-        z-index: 1;
-        left: 0.6vw;
-        margin-top: 0.67em;
-    }
-
-    #advert-right {
-        float: right;
-        position: fixed;
-        height: 600px;
-        width: 160px;
-        z-index: 1;
-        right: 0.6vw;
-        margin-top: 0.67em;
-    }
-
-    #advert-top {
-        display: none;
-    }
-
-    #registrationButtons {
-        margin-right: 174px;
-    }
-}
-
-/*** Media (screen >= 1600)  ***/
-
-@media screen and (min-width: 1600px) {
-
-    #advert-left {
-        width: 300px;
-    }
-
-    #advert-right {
-        width: 300px;
-    }
-
-    #registrationButtons {
-        margin-right: 314px;
     }
 }
 
@@ -636,7 +549,7 @@ select {
         .spinner span:nth-child(4) {
             top: 20%;
             left: 0;
-            background-color: gold;
+            background-color: #FFF000;
             animation: move4 1.2s linear infinite;
         }
 
@@ -665,9 +578,9 @@ select {
 }
 
 @keyframes move4 {
-    0% {transform: translate(0) skew(0deg, -10deg); z-index: 0}
+    0% {transform: translate(0) skew(0deg, -10deg);z-index: 0}
     25% {transform: translate(0, -30%) skew(0deg, -10deg);z-index: 3}
     50% {transform: translate(100%, 0) skew(0deg, -10deg);z-index: 2}
     75% {transform: translate(100%, 30%) skew(0deg, -10deg);z-index: 1}
-    100% {transform: translate(0) skew(0deg, -10deg); z-index: 0}
+    100% {transform: translate(0) skew(0deg, -10deg);z-index: 0}
 }

@@ -1,79 +1,52 @@
-if (!self.define) {
-    const e = e => {
-            "require" !== e && (e += ".js");
-            let s = Promise.resolve();
-            return r[e] || (s = new Promise(async s => {
-                if ("document" in self) {
-                    const r = document.createElement("script");
-                    r.src = e, document.head.appendChild(r), r.onload = s
-                } else importScripts(e), s()
-            })), s.then(() => {
-                if (!r[e]) throw new Error(`Module ${e} didn’t register its module`);
-                return r[e]
-            })
-        },
-        s = (s, r) => {
-            Promise.all(s.map(e)).then(e => r(1 === e.length ? e[0] : e))
-        },
-        r = {
-            require: Promise.resolve(s)
-        };
-    self.define = (s, i, o) => {
-        r[s] || (r[s] = Promise.resolve().then(() => {
-            let r = {};
-            const t = {
-                uri: location.origin + s.slice(1)
-            };
-            return Promise.all(i.map(s => {
-                switch (s) {
-                    case "exports":
-                        return r;
-                    case "module":
-                        return t;
-                    default:
-                        return e(s)
-                }
-            })).then(e => {
-                const s = o(...e);
-                return r.default || (r.default = s), r
-            })
-        }))
-    }
-}
-define("./sw.js", ["./workbox-e147cfff"], (function(e) {
-    "use strict";
-    self.addEventListener("message", e => {
-        e.data && "SKIP_WAITING" === e.data.type && self.skipWaiting()
-    }), e.precacheAndRoute([{
-        url: "css/tombola.css",
-        revision: "d1f2c9db612dba43c22b20564a9f4fa2"
-    }, {
-        url: "images/tombola-splash-001.webp",
-        revision: "18068cf3285ace105d8bc7d82e0e6e5d"
-    }, {
-        url: "images/tombola-splash-002.png",
-        revision: "4e9a43fd798eeb558f527951d94ce3d7"
-    }, {
-        url: "images/top-hat-001-ap.png",
-        revision: "2f84579288ada3c63dff437cf419bb04"
-    }, {
-        url: "images/top-hat-001-lg.png",
-        revision: "5367182e53a018a287c60f98c779577e"
-    }, {
-        url: "images/top-hat-001-sm.png",
-        revision: "9510c6220319ecf690351ed256f07668"
-    }, {
-        url: "index.html",
-        revision: "3bd2067800dfd93daaa5e751f1058941"
-    }, {
-        url: "js/main.js",
-        revision: "0bce6307e20f662c0c164c7d858bd0bc"
-    }, {
-        url: "site.webmanifest",
-        revision: "731e72cc881a57218f30db0d9d9a6f13"
-    }, {
-        url: "robots.txt",
-        revision: "d41d8cd98f00b204e9800998ecf8427e"
-    }], {})
-}));
-//# sourceMappingURL=sw.js.map
+const cacheName = 'v3';
+
+// A list of local resources we always want to be cached.
+const cacheAssets = [
+  'index.html',
+  '/css/tombola.css',
+  '/js/main.js'
+];
+
+// Call install event
+self.addEventListener('install', e => {
+  console.log('Service worker installed');
+
+  e.waitUntil(
+    caches
+      .open(cacheName)
+      .then(cache => {
+        console.log('Service worker caching files');
+        cache.addAll(cacheAssets);
+      })
+      .then(() => self.skipWaiting())
+  );
+});
+
+// Call activate event
+self.addEventListener('activate', e => {
+  console.log('Service worker activated');
+  e.waitUntil(
+    caches.keys().then(cacheNames => {
+      return Promise.all(
+        cacheNames.map(cache => {
+          if (cache !== cacheName) {
+            console.log('Service worker clearing old cache');
+            return caches.delete(cache);
+          }
+        })
+      )
+    })
+  );
+});
+
+// Call fetch event
+self.addEventListener('fetch', e => {
+  // Skip cross-origin requests, like those for Google Analytics.
+  if (e.request.url.startsWith(self.location.origin)) {
+    console.log('Service worker fetching');
+    e.respondWith(
+      fetch(e.request)
+      .catch(() => caches.match(e.request))      
+    );
+  }
+});

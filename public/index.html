@@ -5,9 +5,9 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#006680">
+    <meta name="theme-color" content="#006680" />
     <meta name="description" content="An application for tombola drawings.">
-    <meta name="keywords" content="tombola, raffle, drawings, sampling without replacement">
+    <meta name="keywords" content="tombola, raffle, bingo, lotto, virtual drawing machine, sampling without replacement">
     <meta name="author" content="Geir Ove Nesvik">
 
     <title>Tombola Draw</title>
@@ -20,8 +20,8 @@
 
 <body id="app">
 
-    <div id="menu-dropdown-hover" class="advert-mode">
-        <button id="menu-icon" class="hover-effect">&#9776;</button>
+    <div id="menu-dropdown-hover">
+        <button id="menu-icon" type="submit">&#9776;</button>
         <div id="menu-dropdown-content">
             <div class="menu-line" onclick="document.querySelector('#confirm').style.display='block'">Reset</div>
             <div class="menu-line" onclick="document.querySelector('#mixTimeCard').style.display='block'">Disclosure time</div>
@@ -32,26 +32,21 @@
 
     <!-- Ticket registration -->
     
-    <div id="registration" class="w3-animate-top">
+    <div id="registration" class="w3-fade-in">
         
-        <!--
-        <div id="advert-top" class="advert"></div>
-        <div id="advert-left" class="advert"></div>
-        <div id="advert-right" class="advert"></div>
-        -->
         <h1 id="page-heading">TICKET REGISTRATION</h1>
         <p id="read-only" class="w3-card-4">READ ONLY</p>
         <table>
             <thead>
                 <tr>
-                    <th></th>
+                    <th class="hiddenElement">N</th>
                     <th>Color</th>
                     <th>A-Z</th>
                     <th>First</th>
                     <th>Last</th>
                     <th>Number</th>
-                    <th></th>
-                    <th></th>
+                    <th class="hiddenElement">o</th>
+                    <th class="hiddenElement">x</th>
                 </tr>
             </thead> 
 
@@ -61,7 +56,7 @@
 
                     <td class="item-no">1</td>
                     <td data-label="Color">
-                        <select class="select-color" aria-label="color">
+                        <select class="select-color" aria-label="color" name="choose-a-color">
                             <optgroup label="Pale">
                                 <option class="color-pale-blue" value="color-pale-blue" selected>Pale&nbsp;Blue</option>
                                 <option class="color-pale-green" value="color-pale-green">Pale&nbsp;Green</option>
@@ -91,7 +86,7 @@
                     </td>
 
                     <td data-label="A-Z">
-                        <select class="select-letter" aria-label="letter">
+                        <select class="select-letter" aria-label="letter" name="choose-a-letter">
                             <option label=""></option>
                             <option>A</option><option>B</option><option>C</option><option>D</option><option>E</option>
                             <option>F</option><option>G</option><option>H</option><option>I</option><option>J</option>
@@ -103,12 +98,12 @@
                     </td>
 
                     <td data-label="First">
-                        <input type="number" class="first-number"
+                        <input type="number" class="first-number" name="choose-first-number"
                             aria-label="first" min=1 max=99999 value=1>
                     </td>
 
                     <td data-label="Last">
-                        <input type="number" class="last-number"
+                        <input type="number" class="last-number" name="choose-last-number"
                             aria-label="last" min=1 max=99999>
                     </td>
 
@@ -133,9 +128,9 @@
         </table>
 
         <div id="registrationButtons" class="buttonRow">
-            <button id="add" class="buttonSet hover-effect">ADD</button>
-            <button id="ready" class="buttonSet hover-effect">READY</button>
-            <button id="close" class="buttonSet hover-effect">CLOSE</button>
+            <button id="add" type="submit" class="buttonSet hover-effect">ADD</button>
+            <button id="ready" type="submit" class="buttonSet hover-effect">READY</button>
+            <button id="close" type="submit" class="buttonSet hover-effect">CLOSE</button>
         </div>
 
     </div>
@@ -145,18 +140,18 @@
     <div id="winner-ticket">
 
         <!-- Winner number -->
-        <div id="ticket-text">
-            <img id="splash-screen" src="images/tombola-splash-001.webp" alt="Splash screen" class="w3-card-4 w3-fade-in">
+        <div id="ticket-text" class="w3-fade-in">
+            <img id="splash-screen" src="images/tombola-splash-001.webp" alt="Splash screen" class="w3-card-4">
         </div>
-        <div id="logItem" class="w3-fade-in">&nbsp;</div>
+        <div id="logItem">&nbsp;</div>
         <div id="repetition">R</div>
 
         <!-- Icons and commands at the bottom of the app -->
         <div id="ticketButtons" class="buttonRow">
-                <button id="prev" class="button-left hover-effect">&#10094;</button>
-                <button id="regret" class="buttonSet hover-effect">BACK</button>
-                <button id="draw" class="buttonSet hover-effect">DRAW</button>
-                <button id="next" class="button-right hover-effect">&#10095;</button>
+                <button id="prev" type="submit" class="button-left hover-effect">&#10094;</button>
+                <button id="regret" type="submit" class="buttonSet hover-effect">BACK</button>
+                <button id="draw" type="submit" class="buttonSet hover-effect">DRAW</button>
+                <button id="next" type="submit" class="button-right hover-effect">&#10095;</button>
         </div>
     </div>
 
@@ -195,8 +190,8 @@
             <div class="w3-container">
                 <p>This will <span id="extra-info">end the current round and</span> reset the app.</p>
                 <p>Are you sure?</p>
-                <button class="w3-button" onclick="resetApp()">Yes</button>
-                <button class="w3-button" onclick="document.getElementById('confirm').style.display='none'">No</button>
+                <button type="submit" class="w3-button" onclick="resetApp()">Yes</button>
+                <button type="submit" class="w3-button" onclick="document.getElementById('confirm').style.display='none'">No</button>
             </div>
         </div>
     </div>
@@ -213,7 +208,7 @@
                 <div><span id="mixTime"></span> s</div>
                 <input type="range" aria-label="disclosure-time" min="0" max="6" value="3" step="0.5" class="slider" id="select-seconds">
             </div>
-            <button class="w3-button" onclick="confirmMixingTime();">Confirm</button>
+            <button type="submit" class="w3-button" onclick="confirmMixingTime();">Confirm</button>
         </div>
     </div>
 
@@ -227,7 +222,7 @@
             </header>
             <div class="w3-container">
                 <p>Tombola Draw<br>
-                Version: 4.1.4<br>
+                Version: 4.1.5<br>
                 <span id="author">By Geir Ove Nesvik</span></p>
                 <p>An app for fair ticket drawings.</p>
             </div>
