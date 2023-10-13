@@ -54,7 +54,6 @@ input {
 
 table {
     margin: auto;
-    padding-bottom: 55px;
     border-spacing: 0;
 }
 
@@ -149,12 +148,6 @@ select {
     background-color: rgba(0, 0, 0, 0.2);
 }
 
-/*
-#menu-dropdown-hover:hover {
-    background-color: rgba(0, 0, 0, 0.2);
-}
-*/
-
 #menu-icon {
     font-size: 30px;
 }
@@ -177,9 +170,9 @@ select {
     border: double medium;
 }
 
-/*#registrationButtons {
-  background-color: transparent;
-}*/
+#registrationButtons {
+  position: relative;
+}
 
 #repetition {
     height: auto;
@@ -325,15 +318,19 @@ select {
 .color-paper {color:#000060;background-color:whitesmoke;font-family:cursive;
     background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwBAMAAAClLOS0AAAAG1BMVEUAAADs6uzk3tzc3tzs5uTk2tzk4uTk5uTc2ty2E9CcAAAAAXRSTlMAQObYZgAAAAlwSFlzAAAOxAAADsQBlSsOGwAAAzRJREFUOI0VVDtz3DYQxl84CgNfixVuxdYa5dFytbdGq5uT7BabFczak9GkJQMj97MDFySrD/iedOyr1OPyAVLkFRLfWgOSJTk7GJ8ht1futUbaddJ5rb46orjkunCfTQ4Y0F62hQbSqajhOUW/9mmlECYKjHtll+5B7f57SvZpU1nkhW2GScXhHphRn2U66VdDW69rxSrk6ocsQBnkKB0oGT/rEWz/zVmtLXmsJVXFJJdKIiXng9N9Eo4bKpjtlCqmwUDeXhxIYjrEcmlt+bngkIuGyjbo1nGZ+omq2sYedP9gPP8cAjHLlnu3fd2/CHJ9giw+upcjZRG/wgCw1UJPAzxgThMfUgwGfOSgql7eI7JUt6SeoD6lpDYfj3OHA+IymQ5WOxpc/1s20TU8nCisu8JHdwWGjZi20q9v7VCZKd7RUOXSMUe+FDSiYvP1xwTffykAp+d0+WJ1OitgpwUmUYJIwZGW6ov5smOPPdbbHJF+8O6wV4xp46UmGTJu4xPxMu6o9Kxqw9MUWFqeIJgeeBIHvo4wQj82Mth5ptOkVPvsdAL4BqvCOmFQyBWC/qHc3Awe4rsi//2w8qI1f7UUsjW3lqZ7K4/4TSQc4mGq6++zZ3WZvRABUVDaBvXE//q/1tGSe/oTWvfK55rSbZzbuqx831xGJV73KRi/oe6QOt0eDZpL/BlmDJY+lmMEGYbTlnITN+VoANRt1dyT7PNqpl+kOQswez/cVpp4S8EGOvYjuLdUw+DyK9vwCS7N2uE5vEN2Feq6+rgcyj8QNr2orneo+OYeZL6zEuYqQsk/wZ3sovUyCpcExlPDOXa18qx1eBbL4rrO8wkhU6+33pC4lEx6fnd0TtgXoSpG6+d8HaMJ5xGvG6u6T6Nx28cIGXI/fV5Hzzo6RJ1ekIcqBvvWcAIjNL+5U2oWrRQaK6lVW8F0ttEfR/xKmFrOlMpqnSaYazyl3S2sPLfpPoXEy/uvoSdZDthd3Tk9bqOD4zcBCDOjmZ+vuxOgp259ouNIyiJdQzV+oOo22zGrZSsqewrRhqE+HsmZ97mYPApUYlYMtM8QehnDQd/SeC00aF+7vzEN7vQ/PWI73Dk3Ze0AAAAASUVORK5CYII=);}
 .color-aluminium {color:#504A4B;background-color:silver;font-family:sans-serif;
-    background-image:linear-gradient(grey 0%,whitesmoke 50%,grey 100%)
+    background-image:linear-gradient(grey 0%,whitesmoke 50%,grey 100%);
 }
-.color-gold {color:darkred;background-color:gold;
-    background-image:linear-gradient(#DF9F28, #FDE08D, #8f6B29);font-family:sans-serif
+.color-gold {
+    color:saddlebrown;
+    background-color:gold;
+    background-image:linear-gradient(#DF9F28, #FDE08D, #8f6B29);
+    font-family:sans-serif;
 }
 .color-wood {color:saddlebrown;background-color:burlywood;font-family:sans-serif;
     background-image:repeating-linear-gradient(0.5deg, hsla(0,0%,100%,0) 0%, hsla(0,0%,90%,0) 4%, hsla(0,0%,100%, .1) 5%),
         repeating-linear-gradient(0deg,hsla(0,0%, 0%,0), 0%, hsla(0,0%, 0%,0) 2.5%, hsla(0,0%, 0%,.03) 6%),
-        repeating-linear-gradient(-0.5deg,hsla(0,0%,80%,0) 0%, hsla(0,0%,100%,0) 1.3%, hsla(0,0%,100%,.15) 3.6%)
+        repeating-linear-gradient(-0.5deg,hsla(0,0%,80%,0) 0%, hsla(0,0%,100%,0) 1.3%, hsla(0,0%,100%,.15) 3.6%);
+    /*text-shadow: 0px 1px 0px rgba(255,255,255,.3), 0px -1px 0px rgba(0,0,0,.7);*/
 }
 
 .w3-animate-top{position:relative;animation:animateTop 0.5s}@keyframes animateTop{from{transform: translateY(-200%);} to{transform: translateY(0%);}}
