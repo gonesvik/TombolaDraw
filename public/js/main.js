@@ -123,7 +123,8 @@ function checkOverlaps(element) {
                     if (all_rows[other].querySelector('.select-color').value !== cur_color ||
                         all_rows[other].querySelector('.select-letter').value !== cur_letter ||
                         other_first_val > cur_last_val ||
-                        other_last_val < cur_first_val
+                        other_last_val < cur_first_val ||
+                        other_last_val < other_first_val
                     ) {
                         overlaps[other].delete(cur_index);
                         overlaps[cur_index].delete(other);
