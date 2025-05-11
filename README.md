@@ -1,4 +1,4 @@
-# Tombola-Draw
+# TombolaDraw
 Tombola Draw is an app for fair lottery drawings. You register all tickets with a mumber series and optionally a color and a letter.
 You can register several series of tickets as long as they don't overlap.
 
