@@ -1,0 +1,30 @@
+{
+  "name": "Tombola Draw",
+  "short_name": "Tombola Draw",
+  "icons": [
+    {
+      "src": "/images/top-hat-001-ap.png",
+      "type": "image/png",
+      "sizes": "57x57"
+    },
+    {
+      "src": "/images/top-hat-001-sm.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/images/top-hat-001-lg.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#006680",
+  "theme_color": "#006680",
+  "scope": "/",
+  "iarc_rating_id": "2686b608-e559-4fa0-9c2c-cba9705b143d",
+  "description": "An app for fair ticket drawings.",
+  "categories": [ "entertainment", "raffle", "tombola", "random drawing" ]
+}

@@ -1,0 +1,266 @@
+﻿<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#006680">
+    <meta name="description" content="An application for tombola drawings.">
+    <meta name="keywords" content="tombola, raffle, bingo, lotto, virtual drawing machine, sampling without replacement">
+    <meta name="author" content="Geir Ove Nesvik">
+    <meta name="copyright" content="Copyright (c) 2023 Geir Ove Nesvik">
+    <meta name="application-name" content="Tombola Draw">
+    <meta name="apple-mobile-web-app-title" content="Tombola Draw">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+         
+    <title>Tombola Draw</title>
+
+    <link rel="manifest" type="application/manifest+json" href="site.webmanifest">
+    <link rel="stylesheet" type="text/css" href="css/tombola.css" async>
+    <link rel="apple-touch-icon" type="image/png" href="images/top-hat-001-ap.png" async>
+    <link rel="shortcut icon" type="image/svg+xml" href="images/tophat-icon-teal.svg" async>
+</head>
+
+<body id="app">
+
+    <div id="menu-dropdown-hover">
+        <button id="menu-icon" type="submit">&#9776;</button>
+        <div id="menu-dropdown-content">
+            <div class="menu-line" onclick="document.querySelector('#reset').style.display='block'">Reset</div>
+            <div class="menu-line" onclick="document.querySelector('#setDisclosureTime').style.display='block'">Disclosure time</div>
+            <div class="menu-line" onclick="startReview()" id="review-button">Review inputs</div>
+            <div class="menu-line" onclick="document.querySelector('#help').style.display='block'">Help</div>
+            <div class="menu-line" onclick="document.querySelector('#about').style.display='block'">About</div>
+        </div>
+    </div>
+
+    <!-- Ticket registration -->
+    
+    <div id="registration" class="w3-fade-in">
+        
+        <h1 id="page-heading">TICKET REGISTRATION</h1>
+        <p id="read-only" class="w3-card-4">READ ONLY</p>
+        <table>
+            <thead>
+                <tr>
+                    <th class="hiddenElement">N</th>
+                    <th>Color</th>
+                    <th>A-Z</th>
+                    <th>First</th>
+                    <th>Last</th>
+                    <th>Number</th>
+                    <th class="hiddenElement">o</th>
+                    <th class="hiddenElement">x</th>
+                </tr>
+            </thead> 
+
+            <tbody>
+
+                <tr aria-label="inputRecord">
+
+                    <td class="item-no">1</td>
+                    <td data-label="Color">
+                        <select class="select-color" title="color" name="color">
+                            <optgroup label="PALE">
+                                <option class="color-pale-blue" value="color-pale-blue" selected>Pale&nbsp;Blue</option>
+                                <option class="color-pale-green" value="color-pale-green">Pale&nbsp;Green</option>
+                                <option class="color-pale-red" value="color-pale-red">Pale&nbsp;Red</option>
+                                <option class="color-pale-yellow" value="color-pale-yellow">Pale&nbsp;Yellow</option>
+                            </optgroup>
+                            <optgroup label="BRIGHT">
+                                <option class="color-bright-blue" value="color-bright-blue">Bright&nbsp;Blue</option>
+                                <option class="color-bright-green" value="color-bright-green">Bright&nbsp;Green</option>
+                                <option class="color-bright-red" value="color-bright-red">Bright&nbsp;Red</option>
+                                <option class="color-bright-yellow" value="color-bright-yellow">Bright&nbsp;Yellow
+                                </option>
+                            </optgroup>
+                            <optgroup label="MIX">
+                                <option class="color-grey" value="color-grey">Grey</option>
+                                <option class="color-orange" value="color-orange">Orange</option>
+                                <option class="color-purple" value="color-purple">Purple</option>
+                                <option class="color-teal" value="color-teal">Teal</option>
+                            </optgroup>
+                            <optgroup label="TEXTURES">
+                                <option class="color-bronze" value="color-bronze">Bronze</option>
+                                <option class="color-gold" value="color-gold">Gold</option>
+                                <option class="color-paper" value="color-paper">Paper</option>
+                                <option class="color-wood" value="color-wood">Wood</option>
+                            </optgroup>
+                        </select>
+                    </td>
+
+                    <td data-label="A-Z">
+                        <select class="select-letter" title="letter" name="letter">
+                            <option label=""></option>
+                            <option>A</option><option>B</option><option>C</option><option>D</option><option>E</option>
+                            <option>F</option><option>G</option><option>H</option><option>I</option><option>J</option>
+                            <option>K</option><option>L</option><option>M</option><option>N</option><option>O</option>
+                            <option>P</option><option>Q</option><option>R</option><option>S</option><option>T</option>
+                            <option>U</option><option>V</option><option>W</option><option>X</option><option>Y</option>
+                            <option>Z</option>
+                        </select>
+                    </td>
+
+                    <td data-label="First">
+                        <input type="number" class="ticket-number" min=1 max=99999 value=1 title="first" name="first">
+                    </td>
+
+                    <td data-label="Last">
+                        <input type="number" class="ticket-number" min=1 max=99999 title="last" name="last">
+                    </td>
+
+                    <td class="num-tickets" data-label="Number">0</td>
+
+                    <td><span class="status-light"></span></td>
+
+                    <td class="cancel-x remove-item">&times;</td>
+                </tr>
+            </tbody>
+
+            <tfoot>
+                <tr>
+                    <td></td>
+                    <td id="totalLabel" class="tabCell" colspan="4">Grand total</td>
+                    <td id="totalNo" class="tabCell">0</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tfoot>
+
+        </table>
+
+        <div id="registrationButtons" class="buttonRow">
+            <button id="insert" type="submit" class="buttonSet hover-effect">INSERT</button>
+            <button id="ready" type="submit" class="buttonSet hover-effect">READY</button>
+            <button id="close" type="submit" class="buttonSet hover-effect">CLOSE</button>
+        </div>
+
+    </div>
+    
+    <!--Presentation of the winner tickets -->
+
+    <div id="winner-ticket">
+
+        <!-- Winner number -->
+        <div id="ticket-text" class="w3-fade-in"></div>
+        <div id="logItem" class="w3-fade-in">&nbsp;</div>
+        <div id="repetition" class="w3-fade-in">R</div>
+
+        <!-- Icons and commands at the bottom of the app -->
+        <div id="ticketButtons" class="buttonRow">
+            <button id="prev" type="submit" class="button-left hover-effect">&#10094;</button>
+            <button id="regret" type="submit" class="buttonSet hover-effect">BACK</button>
+            <button id="draw" type="submit" class="buttonSet hover-effect">DRAW</button>
+            <button id="next" type="submit" class="button-right hover-effect">&#10095;</button>
+        </div>
+    </div>
+
+    <!--Spin the mixing wheel -->
+    <section id="spinner-panel" aria-live="polite" aria-label="Spinning color cards">
+      <div class="spinner" id="spinner" aria-hidden="false">
+        <div class="card blue">B 6</div>
+        <div class="card red">H 12</div>
+        <div class="card green">J 65</div>
+        <div class="card yellow">L 2</div>
+        <div class="card purple">G 9</div>
+      </div>
+    </section>
+
+    <!-- Error message -->
+    <div id="alert" class="w3-modal centerElements">
+        <div class="w3-modal-content w3-animate-top w3-card-4">
+            <header class="w3-container color-bright-red">
+                <span class="w3-button w3-display-topright"
+                    onclick="document.getElementById('alert').style.display='none'">&times;</span>
+                <h2>Error!</h2>
+            </header>
+            <div class="w3-container">
+                <p id="alert-text"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation before resetting the app -->
+    <div id="reset" class="w3-modal centerElements">
+        <div class="w3-modal-content w3-animate-top w3-card-4">
+            <header class="w3-container color-orange">
+                <span class="w3-button w3-display-topright"
+                    onclick="document.getElementById('reset').style.display='none'">&times;</span>
+                <h2>Warning!</h2>
+            </header>
+            <div class="w3-container">
+                <p id="reset-warning">This will reset the app.</p>
+                <p>Are you sure?</p>
+                <button type="submit" class="w3-button w3-button-border" onclick="resetApp()">Yes</button>
+                <button type="submit" class="w3-button w3-button-border" onclick="document.getElementById('reset').style.display='none'">No</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Set the mixing time, i.e. the waiting time before a new ticket is shown. -->
+    <div id="setDisclosureTime" class="w3-modal centerElements">
+        <div class="w3-modal-content w3-animate-top w3-card-4">
+            <header class="w3-container color-teal">
+                <span class="w3-button w3-display-topright" onclick="resetDisclosureTime();">&times;</span>
+                <h2><label for="disclosure-time">Disclosure time</label></h2>
+            </header>
+            <div class="centerElements">
+                <div><span id="rangeValue"></span> s</div>
+                <input type="range" min="0" max="10" value="3.0" step="0.5" class="slider" id="disclosure-time">
+            </div>
+            <button type="submit" class="w3-button w3-button-border" onclick="confirmDisclosureTime();">Confirm</button>
+        </div>
+    </div>
+
+    <!-- Help -->
+    <div id="help" class="w3-modal centerElements">
+        <div class="w3-modal-content w3-animate-top w3-card-4">
+            <header class="w3-container color-bright-blue">
+                <span class="w3-button w3-display-topright"
+                    onclick="document.getElementById('help').style.display='none'">&times;</span>
+                <h2>Help</h2>
+            </header>
+            <div class="w3-container">
+                <div id="help-text">
+                    <h3>Shortcuts for input mode</h3>
+                    <div><span class="shortcut">Insert</span><span>Insert a new input record</span></div>
+                    <div><span class="shortcut">Pg Dn</span><span>Go to Ready state</span></div>
+                    <div><span class="shortcut">Pg Up</span><span>Go back from Ready state</span></div>
+                    <div><span class="shortcut">Enter</span><span>Draw winner from Ready state</span></div>
+                    <div><span class="shortcut">Space</span><span>Same as Enter</span></div>
+                    <h3>Shortcuts for drawing mode</h3>
+                    <div><span class="shortcut">Enter</span><span>Draw a new winner</span></div>
+                    <div><span class="shortcut">Space</span><span>Same as Enter</span></div>
+                    <div><span class="shortcut">L Arrow</span><span>Show previous ticket</span></div>
+                    <div><span class="shortcut">R Arrow</span><span>Show next ticket</span></div>
+                </div>          
+            </div>
+        </div>
+    </div>
+
+    <!-- About the app -->
+    <div id="about" class="w3-modal centerElements">
+        <div class="w3-modal-content w3-animate-top w3-card-4">
+            <header class="w3-container color-bright-blue">
+                <span class="w3-button w3-display-topright"
+                    onclick="document.getElementById('about').style.display='none'">&times;</span>
+                <h2>About</h2>
+            </header>
+            <div class="w3-container">
+                <p>
+                    Tombola Draw<br/>
+                    Version: <span id="version"></span><br/>
+                    <span id="author">By G.O. Nesvik</span>
+                </p>
+                <p>An app for fair ticket drawings.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Time consuming script -->
+    <script type="application/javascript" src="js/main.js" async></script>
+
+</body>
+</html>
