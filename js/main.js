@@ -1,6 +1,6 @@
 ﻿'use strict';
 
-const gc_version = '5.0.2';
+const gc_version = '5.0.3';
 const gc_author = 'By Geir Ove Nesvik';
 const gc_max_ticket_num = 99999;    // No ticket number can be larger than this number
 const gc_tooManyTickets = 99999;    // A warning will be raised if the sum of tickets is greater than this number
