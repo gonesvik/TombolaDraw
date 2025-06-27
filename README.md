@@ -1,13 +1,24 @@
-# TombolaDraw
-Tombola Draw is an app for fair lottery drawings. You register all tickets with a mumber series and optionally a color and a letter.
-You can register several series of tickets as long as they don't overlap.
 
-Properties:
-- Each ticket will never be drawn more than once.
+# TombolaDraw
+
+Tombola Draw is an app for fair lottery drawings. You register all the valid tickets with a number interval, a ticket color and optionally a letter. You can register multiple, non-overlapping series of tickets.
+
+<div align ="center">
+  <img src="images\top-hat-001-ap.png" alt="Tombola Draw Icon" width="80px">
+</div>
+
+## Properties
+
+Tombola Draw have the following properties:
+
+- A ticket will never be drawn more than once.
+- Overlapping ticket series are not accepted. Two or more series are overlapping if they share the same  color, the same letter and at least one common number value.
 - Each ticket series starts with 1 as the default value, but this can be overrided.
-- If you press the Back button (<), you will see the previous winner ticket and a forward button (>) will also be available.
-- A previously drawn ticket will be marked with an R in the upper, right corner of the window to make it clear that this is only a repetition.
-- Overlapping ticket series will not be registered. Two series are overlapping if they have the same color, the same letter and a common nummer value.
-- Every ticket series have a round status indicator. It is orange as long as the series is incomplete. It will be green when everything is OK and red if is overlapping with another ticket series.
-- The maximum number of registered tickets is 99 999.
-- If you click the menu icon, you can see which ticket series are registered or reset the app. You can also modify the number of seconds the app will use to reveal the next winner ticket.
+- Every ticket series have a status indicator. It is orange when the specification of the series is incomplete. It is green when everything is OK and red if it is overlapping with another ticket series.
+- The number of registered tickets is limited to 99 999.
+- To complete the registration mode you have to press the Ready button
+- If you press either the Draw button, the \<Space\> key or the \<Enter\> key when the app is in drawing mode, a new ticket will be drawn.
+- If you press the Back button (<) or the Forward button (>), you will see either the previous or the following winner ticket.
+- A previously drawn ticket will allways be marked with an **R** in the upper, right corner of the window to make it clear that this is a repetition and not new, valid winner.
+- If you click the menu icon in the top, left corner, you can review the registered ticket series or reset the app. You can also change the number of seconds the app will be waiting before revealing the next, chosen winner ticket (the disclosure time).
+
