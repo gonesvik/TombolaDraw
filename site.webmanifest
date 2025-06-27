@@ -19,11 +19,11 @@
       "sizes": "512x512"
     }
   ],
-  "start_url": "/",
+  "start_url": "/TombolaDraw",
   "display": "standalone",
   "background_color": "#006680",
   "theme_color": "#006680",
-  "scope": "/",
+  "scope": "/TombolaDraw",
   "iarc_rating_id": "2686b608-e559-4fa0-9c2c-cba9705b143d",
   "description": "An app for fair ticket drawings.",
   "categories": [ "entertainment", "raffle", "tombola", "random drawing" ]
