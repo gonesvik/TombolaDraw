@@ -309,13 +309,13 @@ select optgroup, select option {
 .color-bright-green{color:white;background-color:green;font-family:sans-serif}
 .color-bright-red{color:white;background-color:red;font-family:sans-serif}
 .color-bright-yellow{color:black;background-color:#FFF000;font-family:sans-serif}
-.color-orange{color:white;background-color:orange;font-family:sans-serif}
+.color-orange{color:black;background-color:orange;font-family:sans-serif}
 .color-pale-blue{color:black;background-color:lightblue;font-family:sans-serif}
 .color-pale-green{color:black;background-color:lightgreen;font-family:sans-serif}
 .color-pale-red{color:black;background-color:pink;font-family:sans-serif}
 .color-pale-yellow{color:black;background-color:lemonchiffon;font-family:sans-serif}
 .color-purple{color:white;background-color:mediumorchid;font-family:sans-serif}
-.color-grey{color:#3c3c3c;background-color:gainsboro;font-family:sans-serif}
+.color-grey{color:black;background-color:gainsboro;font-family:sans-serif}
 .color-teal{color:white;background-color: teal;font-family:sans-serif}
 .color-whitesmoke{color:black;background-color:whitesmoke;font-family:sans-serif}
 .color-paper {color:midnightblue;background-color:whitesmoke;font-family:cursive;
