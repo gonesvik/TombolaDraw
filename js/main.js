@@ -1,90 +1,157 @@
 ﻿'use strict';
 
-const gc_version = '5.0.4';
+const gc_version = '5.1.0';
 const gc_author = 'By Geir Ove Nesvik';
 const gc_max_ticket_num = 99999;    // No ticket number can be larger than this number
 const gc_tooManyTickets = 99999;    // A warning will be raised if the sum of tickets is greater than this number
+const gc_reset_warning = 'This will end the current session and reset the app.';
+const splashHTML = `
+    <div id="splash-screen" class="w3-card-4 color-slate-teal splash-font">
+        <div class="w3-display-middle">
+        <div class="line1">Tombola</div>
+        <div class="line2">Draw</div>
+        </div>
+    </div>`;
 const gc_splashScreenImg =
         '<img id="splash-screen" src="images/tombola-splash-001.webp" alt="Splash screen" class="w3-card-4"></img>';
-const gc_colorClasses = [
+const gc_ticketColors = [
         'color-pale-blue', 'color-pale-green', 'color-pale-red', 'color-pale-yellow',
-        'color-bright-blue', 'color-bright-green', 'color-bright-red', 'color-bright-yellow',
-        'color-grey', 'color-orange', 'color-purple', 'color-teal',
-        'color-bronze', 'color-gold', 'color-paper', 'color-wood'
+        'color-skybound-blue', 'color-meadow-mint', 'color-golden-hour-glow', 'color-tangerine-drift', 'color-rosewood-blush',
+        'color-orange', 'color-purple', 'color-teal', 'color-burgundy',
+        'color-bronze', 'color-silver', 'color-gold'
       ];
-const cards = document.querySelectorAll('.card');
-const seenAtZ0 = new Set();      
+
+const err_TooFewTickets = 101;
+const err_TicketNumberTooBig = 102;
+const err_TooManyTickets = 103;
+const err_OverlappingRanges = 104;
+const err_NonIntegerNumberDetected = 105;
+const io_delay = 150// ms
 
 let gv_ticketFontSize = '48vmin';   // Standard font size for tickets
+let gv_activeMode = 'input';        // Initial mode
 let gv_drawHistory;
-let gv_all_tickets;
+let gv_all_tickets; 
 let gv_historyIndex;                // Index number for drawn tickets
 let gv_overlaps;                    // List of overlapping rows. NaN indicates an incomplete record
 let gv_grandTotal;
 let gv_color_index;
 let gv_countdown;
 
-let slider = document.querySelector('#disclosure-time');
-let disclosureTime = slider.value;
+let slider = document.querySelector('#suspension-time');
+let suspensionTime = slider.value;
 
-// Register ServiceWorker
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        navigator.serviceWorker
-            .register('js/sw.js')
-            .then(ref => console.log('Service worker registered'))
-            .catch(err => console.log(`Service worker failed with ${err}`))
-    })
+/* Some helper functions */
+
+function setText(selector, value, parent = document) {
+  const el = parent.querySelector(selector);
+  if (el) el.textContent = value;
+}
+
+function showElement(selector, displayType = 'block') {
+    const el = document.querySelector(selector);
+    if (el) el.style.display = displayType;
+}
+
+function hideElement(selector) {
+    const el = document.querySelector(selector);
+    if (el) el.style.display = 'none';
+}
+
+function enableElements(selector) {
+    document.querySelectorAll(selector).forEach(el => el.disabled = false);
+}
+
+function disableElements(selector) {
+    document.querySelectorAll(selector).forEach(el => el.disabled = true);
+}
+
+function copyComputedStyle(fromSelector, toSelector, property) {
+    const toEl = document.querySelector(toSelector);
+    const fromEl = document.querySelector(fromSelector);
+    if (toEl && fromEl) {
+        const value = getComputedStyle(fromEl)[property];
+        toEl.style[property] = value;
+    }
+}
+
+function toggleElement(condition, selector) {
+    condition ? enableElements(selector) : disableElements(selector);
 }
 
 // initiate Tombola Draw
 
 document.querySelector('#version').textContent = gc_version;
 document.querySelector('#author').textContent = gc_author;
-document.querySelector('#rangeValue').textContent = parseFloat(disclosureTime).toFixed(1);
+document.querySelector('#rangeValue').textContent = parseFloat(suspensionTime).toFixed(1);
 
 resetApp();
 
 /* Functions */
 
 // Reveal winner 
-function revealWinner (elem) {
-    document.querySelector('#winner-ticket').style.display = 'flex';
-    document.querySelector('#spinner-panel').style.display = 'none';
-    document.querySelector('#menu-icon').style.color = getComputedStyle(elem).color;
+function revealWinner () {
+    document.querySelector('#present-winner').style.opacity = '0';
+    hideElement('#spinner-panel');
+    showElement('#present-winner', 'flex');
+
+    copyComputedStyle('#ticket-text', '#menu-icon', 'color');
+
+    const html = document.documentElement;
+    const startVel = Math.min(html.clientHeight, html.clientWidth)/20;
+
+    if (typeof confetti === "function") {
+        // 🎉 Let the confetti fly!
+        confetti({
+            particleCount: 200,
+            spread: 360,
+            startVelocity: startVel,
+            gravity: 0.8,
+            ticks: 250,
+            scalar: 1.8,
+            drift: 0,
+            decay: 0.92,
+            colors: spinnerColors
+        })        
+    }    
+    document.querySelector('#present-winner').style.opacity = '1';
+
 }
 
 // Set background color in registration form record
 function nextColor () {
-    gv_color_index = ++gv_color_index % 16;
-    return gc_colorClasses[gv_color_index];
+    gv_color_index++;
+    gv_color_index = gv_color_index % 16;
+    return gc_ticketColors[gv_color_index];
 }
 
 // Add a new record
-function addRecord () {
+function addNewRow () {
 
-    let form_tab = document.querySelector('tbody');
-    let first_row = form_tab.querySelector('tr');
-    let new_row = first_row.cloneNode(true);
-
-    let colorClass = nextColor();
-    new_row.className = colorClass;
-    new_row.querySelector('.item-no').textContent = form_tab.querySelectorAll('tr').length+1;
-    new_row.querySelector(`[title="color"] .${colorClass}`).selected = 'selected';
-    new_row.querySelector('[title="first"]').value = '1';
+    const form_tab = document.querySelector('tbody');
+    const first_row = form_tab.querySelector('tr');
+    const new_row = first_row.cloneNode(true);
+    const chosen_color = nextColor();
+    const item_num = form_tab.querySelectorAll('tr').length+1;
+   
+    setText('.item-no', item_num, new_row);
+    new_row.className = chosen_color;
+    new_row.querySelector(`[title="color"] .${chosen_color}`).selected = true;
+    new_row.querySelector('[title="first"]').value = 1;
     new_row.querySelector('[title="last"]').value = null;
     new_row.querySelector('.status-light').style.backgroundColor = 'orange';
-    new_row.querySelector('.num-tickets').textContent = '0';
+    setText('.num-tickets', 0, new_row);
+
     form_tab.appendChild(new_row);
 
-    // Scroll to bottom of list
+    // Scroll to bottom of the list
     new_row.scrollIntoView();
     
     gv_overlaps.push(new Set([NaN]));
 
 }
 
-// Check overlapping series of tickets
+// Check that all ticket series are valid
 function checkOverlaps(element) {
 
     let all_rows = document.querySelectorAll('[aria-label="inputRecord"]');
@@ -97,15 +164,14 @@ function checkOverlaps(element) {
     let other_first_val;
     let other_last_val;
 
-    if (!Number.isInteger(cur_first_val) || !Number.isInteger(cur_last_val)
-       || cur_first_val <= 0 || cur_first_val > cur_last_val ) {
+    if (cur_first_val <= 0 || cur_first_val > cur_last_val ) {
 
         // Current row is incomplete, remove existing overlaps
         gv_overlaps[cur_index].forEach((other_index) => {
             if (other_index >= 0) gv_overlaps[other_index].delete(cur_index);
         });
 
-        gv_overlaps[cur_index].clear;
+        gv_overlaps[cur_index].clear();
         gv_overlaps[cur_index].add(NaN);
     }
     else {
@@ -117,7 +183,9 @@ function checkOverlaps(element) {
             
             if (cur_first_val <= 0 || cur_last_val < cur_first_val) return;
 
-            gv_overlaps[cur_index].delete(NaN);  // Data record is complete
+            if (gv_overlaps[cur_index]?.delete) {
+                gv_overlaps[cur_index].delete(NaN);   // Data record is complete
+            }
 
             cur_color = cur_elem.querySelector('[title="color"]').value;
             cur_letter = cur_elem.querySelector('[title="letter"]').value;
@@ -151,36 +219,63 @@ function checkOverlaps(element) {
 // Calculate number and accumulated number of tickets
 function countTickets(element) {
 
-    let cur_row = element.srcElement.closest('[aria-label="inputRecord"]');
-    let cur_first_val = Number(cur_row.querySelector('[title="first"]').value);
-    let cur_last_val = Number(cur_row.querySelector('[title="last"]').value);
-    let ticket_num = cur_last_val - cur_first_val + 1;
+    const cur_row = element.srcElement.closest('[aria-label="inputRecord"]');
+    const cur_first_elem = cur_row.querySelector('[title="first"]');
+    const cur_last_elem = cur_row.querySelector('[title="last"]');
 
-    if (cur_first_val > 0 && ticket_num >= 0) {
-        cur_row.querySelector('.num-tickets').textContent = ticket_num;
-    }
-    else {
-        cur_row.querySelector('.num-tickets').textContent = '0';
+    console.debug(cur_first_elem); // Debug
+
+    // Not complete row yet
+    if (!cur_last_elem.value) return;
+
+    if (!/^\d+$/.test(cur_first_elem.value+cur_last_elem.value)) {
+        cur_first_elem.value = 1;
+        cur_last_elem.value = "";
+        raiseAlert(err_NonIntegerNumberDetected);
     }
 
-    //let all_tickets_no = document.querySelectorAll('.num-tickets');
+    const cur_first_val = Number(cur_first_elem.value);
+    const cur_last_val = Number(cur_last_elem.value);
+    console.debug(`cur_first_val = ${cur_first_elem.value}, cur_last_val = ${cur_last_elem.value}`); // Debug
+    const ticket_num = (cur_first_val > 0 && cur_last_val >= cur_first_val) ? cur_last_val - cur_first_val + 1 : 0;
+
+    setText('.num-tickets', ticket_num, cur_row);
 
     gv_grandTotal = 0;
     document.querySelectorAll('.num-tickets').forEach((element) => {
          gv_grandTotal += Number(element.textContent)
     });
 
-    // Early warnings. Will also be checked before final registration
+    // Raise error messages. These will also be checked before final registration.
     if (cur_last_val > gc_max_ticket_num) {
         // Ticket number is too big
-        raiseAlert(102);
-    }
-    else if (gv_grandTotal > gc_tooManyTickets) {
-        // Total number of tickets is too big
-        raiseAlert(103);
+        raiseAlert(err_TicketNumberTooBig);
+        return;
     }
 
-    document.querySelector('#totalNo').textContent = gv_grandTotal || '0';
+    if (gv_grandTotal > gc_tooManyTickets) {
+        // Total number of tickets is too big
+        raiseAlert(err_TooManyTickets);
+        return;
+    }
+
+    setText('#totalNo', gv_grandTotal)
+
+}
+
+// Countdown function
+function startCountdown(countdownPeriod) {
+
+    const barFill = document.getElementById("barFill");
+
+    // initiate the bar ...
+    barFill.style.transition = `width ${countdownPeriod}s linear`;
+    barFill.style.width = '100%';
+
+    // and start the countdown
+    setTimeout(() => {
+        barFill.style.width = '0%';
+    }, 80); // The delay ensures that the browser registers the initial state
 
 }
 
@@ -190,41 +285,45 @@ function drawTicket() {
     const labelField = 1;                 // Index for label part in array
     
     let nTicketsLeft = Object.keys(gv_all_tickets).length;
+
+    gv_activeMode = 'draw';
     
     if (nTicketsLeft > 0) {
         
+        startCountdown(suspensionTime);
+
         document.querySelector('#menu-icon').style.color = 'black';
-        document.querySelector('#winner-ticket').style.display = 'none';
-        document.querySelector('#spinner-panel').style.display = (disclosureTime > 0) ? 'flex' : 'none';
+        hideElement('#present-winner');
+        (suspensionTime > 0) ? showElement('#spinner-panel', 'flex') : hideElement('#spinner-panel');
 
-        let winner = Object.keys(gv_all_tickets)[Math.floor(Math.random() * nTicketsLeft)];
+        const winner = Object.keys(gv_all_tickets)[Math.floor(Math.random() * nTicketsLeft)];
         gv_drawHistory.push(gv_all_tickets[winner]);
-        document.querySelector('#logItem').textContent = gv_drawHistory.length;
+        setText('#logItem', gv_drawHistory.length);
 
-        document.querySelector('#winner-ticket').className = gv_all_tickets[winner][colorField];
-        let ticket_text = document.querySelector('#ticket-text');
-        ticket_text.textContent = gv_all_tickets[winner][labelField];
+        document.querySelector('#present-winner').opacity = 0;
+        document.querySelector('#present-winner').className = gv_all_tickets[winner][colorField];
+        setText('#ticket-text', gv_all_tickets[winner][labelField]);
 
         if (gv_drawHistory.length === 1) {
             // Set font size based on max length of ticket text
-            ticket_text.style.fontSize = gv_ticketFontSize;
-            document.querySelector('#regret').style.display = 'none';
-            document.querySelector('#reset-warning').textContent = 
-                'This will end the current session and reset the app.';
+            document.querySelector('#ticket-text').style.fontSize = gv_ticketFontSize;
+            hideElement('#regret');
+            setText('#reset-warning', 'This will end the current session and reset the app.')
         }
         
         delete gv_all_tickets[winner];
 
         gv_historyIndex = gv_drawHistory.length - 1;
 
-        document.querySelector('#prev').disabled = gv_historyIndex ? false : true;
+        gv_historyIndex ? enableElements('#prev') : disableElements('#prev');
+        disableElements('#next');
         document.querySelector('#draw').style.opacity = nTicketsLeft > 1 ? 1 : 0.3;
-        document.querySelector('#next').disabled = true;
 
-        document.querySelector('#repetition').style.display = 'none';
+        hideElement('#repetition');
 
         // Reveal winner when the spinner stops
-        gv_countdown = setTimeout(revealWinner, disclosureTime*1000, ticket_text);
+        gv_countdown = setTimeout(revealWinner, suspensionTime*1000 + io_delay, '#ticket-text');
+
     }
 }
 
@@ -235,18 +334,26 @@ function startReview() {
 
     // stop spinner
     clearTimeout(gv_countdown);
-    document.querySelector('#spinner-panel').style.display = 'none';
+    hideElement('#spinner-panel');
 
     // Switch page
-    document.querySelector('#winner-ticket').style.display = 'none';
+    hideElement('#present-winner');
     document.querySelector('html').style.backgroundColor = 'beige';
    
-    document.querySelector('#menu-icon').style.color = 'black';
-    document.querySelector('#registration').style.display = 'block';
+    //// document.querySelector('#menu-icon').style.color = 'black';
+    showElement('#registration');
     
-    document.querySelectorAll('.buttonSet').forEach((element) => { element.style.display = 'none' });
-    document.querySelector('#close').style.display = 'inline-block';
+    document.querySelectorAll('.button-set').forEach((element) => { element.style.display = 'none' });
 
+    showElement('#close', 'inline-block');
+
+}
+
+// Help information
+function showHelp() {
+    // Mark the current mode in the Help screen
+    highlightActiveMode(gv_activeMode);
+    showElement('#help');
 }
 
 // Back to drawing
@@ -256,180 +363,168 @@ function endReview() {
 
     // Switch page
     document.querySelector('#registration').scrollTop = 0;
-    document.querySelector('#registration').style.display = 'none';
-    document.querySelector('#winner-ticket').style.display = 'flex';
+    hideElement('#registration');
+    showElement('#present-winner', 'flex');
     
     document.querySelector('html').style.backgroundColor = 'whitesmoke';
-    document.querySelector('#menu-icon').style.color = getComputedStyle(document.querySelector('#ticket-text')).color;
-    document.querySelectorAll('.buttonSet').forEach((element) => { element.style.display = 'inline-block' });
-    
-    document.querySelector('#close').style.display = 'none';
+    copyComputedStyle('#ticket-text', '#menu-icon', 'color');
+    document.querySelectorAll('.button-set').forEach((element) => { element.style.display = 'inline-block' });
+
+    hideElement('#close');
 
     if ( gv_drawHistory.length > 0 && gv_drawHistory.length > gv_historyIndex) {
-        document.querySelector('#repetition').style.display = 'flex';
-        document.querySelector('#regret').style.display = 'none';
+        showElement('#repetition', 'flex');
+        hideElement('#regret');
     }
 
-    document.querySelector('#draw').disabled = false;
-    document.querySelector('#prev').disabled = (gv_historyIndex > 0) ? false : true;
-    document.querySelector('#next').disabled = (gv_drawHistory.length > gv_historyIndex+1) ? false : true;
+    enableElements('#draw');
+    (gv_historyIndex > 0) ? enableElements('#prev') : disableElements('#prev');
+    (gv_drawHistory.length > gv_historyIndex+1) ? enableElements('#next') : disableElements('#next');
 
 }
 
 // Set the dislosure time i.e. the spinning time of the spinner
-function confirmDisclosureTime() {
+function setSuspensionTime() {
 
-    disclosureTime = slider.value;
-    // Close page
-    document.querySelector('#setDisclosureTime').style.display = 'none';
+    suspensionTime = slider.value;
+    // Closing modal page
+    hideElement('#setSuspensionTime');
 
 }
 
 // Reset the dislosure time
-function resetDisclosureTime() {
+function resetSuspensionTime() {
 
-    document.querySelector('#disclosure-time').value = disclosureTime;
-    document.querySelector('#rangeValue').textContent = parseFloat(disclosureTime).toFixed(1);
+    document.querySelector('#suspension-time').value = suspensionTime;
+    setText('#rangeValue', parseFloat(suspensionTime).toFixed(1));
 
     // Close page
-    document.querySelector('#setDisclosureTime').style.display = 'none';
+    hideElement('#setSuspensionTime');
 
 }
 
 // Raise warning messages
 function raiseAlert(message_no) {
 
-    let message;
+    let err_message;
 
     switch(message_no) {
-        case 101:
-          message = `Total number of tickets is too small. Minimum is 2.`;
+        case err_TooFewTickets:
+          err_message = `Total number of tickets is too small. Minimum is 2.`;
           break;
-        case 102:
-          message = `Ticket number is too big. Maximum is ${gc_max_ticket_num}.`;
+        case err_TicketNumberTooBig:
+          err_message = `Ticket number is too big. Maximum is ${gc_max_ticket_num}.`;
           break;
-        case 103:
-          message = `Total number of tickets is too big. Maximum is ${gc_max_ticket_num}.`;
+        case err_TooManyTickets:
+          err_message = `Total number of tickets is too big. Maximum is ${gc_max_ticket_num}.`;
           break;
-        case 104:
-          message = "Two or more ticket ranges are overlapping.";
-          break;          
+        case err_OverlappingRanges:
+          err_message = "Two or more ticket ranges are overlapping.";
+          break;
+        case err_NonIntegerNumberDetected:
+          err_message = "Only integers are allowed in number fields.";
+          break;                  
         default:
-          message = "Unexpected condition.";
+          err_message = "Unexpected condition.";
     }
 
-    document.querySelector("#alert-text").textContent = message;
-    document.querySelector("#alert").style.display = 'block';
+    document.querySelector("#alert-text").textContent = err_message;
+    showElement('#alert');
 }
+
 
 // Register all the tickets
 function registerTickets() {
 
     if (gv_drawHistory.length > 0) return;
 
-    let inputTable = document.querySelector('table');
-    let letter, color, from, to, label, ticketNum;
-    let longestLabelLen = 1;        // longest label length
-    let selection;
+    const inputTable = document.querySelector('table');
+    const colors = inputTable.querySelectorAll('tr [title="color"]');
+    const letters = inputTable.querySelectorAll('tr [title="letter"]');
+    const firsts = inputTable.querySelectorAll('tr [title="first"]');
+    const lasts = inputTable.querySelectorAll('tr [title="last"]');
+
+    const noInputErrors = gv_overlaps.every(set => set.size === 0 || set.has(NaN));
+    if (!noInputErrors) {
+        return raiseAlert(err_OverlappingRanges); // Overlap alert
+    }
+
+    gv_all_tickets = {};
     let grandTotal = 0;
-    let i;
+    let longestLabelLen = 1;
 
-    if (gv_grandTotal < 2) {
-        // Total number of tickets must be larger than one
-        raiseAlert(101);
-        return;
-    }
+    for (let i = 0; i < inputTable.rows.length - 2; i++) {
+        const color = colors[i]?.value;
+        const letter = letters[i]?.value;
+        const from = Number(firsts[i]?.value);
+        const to = Number(lasts[i]?.value);
 
-    if (gv_grandTotal > gc_tooManyTickets) {
-        // Total number of tickets is too big
-        raiseAlert(103);
-        return;
-    }
+        if (!color || isNaN(from) || isNaN(to)) continue;
 
-    // Check if overlaps exists
-    for (i = 0; i < gv_overlaps.length; i++) {
-        if (gv_overlaps[i].size > 0 && gv_overlaps[i].has(NaN) === false)
-            break;
-    }
+        if (to-from+grandTotal >= gc_tooManyTickets) return raiseAlert(err_TooManyTickets);
 
-    if (i < gv_overlaps.length) {
-        // Ticket ranges are overlapping
-        raiseAlert(104);
-        return;
-    }
-
-    for (i = 0; i < inputTable.rows.length-2; i++) {
-
-        color = inputTable.querySelectorAll('tr [title="color"]')[i].value;
-        letter = inputTable.querySelectorAll('tr [title="letter"]')[i].value;
-        from = Number(inputTable.querySelectorAll('tr [title="first"]')[i].value);
-        to = Number(inputTable.querySelectorAll('tr [title="last"]')[i].value);
-
-        for (ticketNum = from; 0 < ticketNum && ticketNum <= to; ticketNum++) {
-            if (letter >= 'A') {
-                label = letter + ' ' + ticketNum.toString();
-            } else {
-                label = ticketNum.toString();
-            }
+        for (let ticketNum = from; ticketNum <= to && ticketNum > 0; ticketNum++) {
+            const label = letter >= 'A' ? `${letter} ${ticketNum}` : `${ticketNum}`;
             gv_all_tickets[grandTotal++] = [color, label];
+            longestLabelLen = Math.max(label.length, longestLabelLen);
         }
-
-        longestLabelLen = Math.max(label.length, longestLabelLen);
-
     }
 
-    gv_ticketFontSize = String(24 + (7-longestLabelLen)*4)+'vmin'; // 24,28,32,36,40,44,48vmin
+    if (grandTotal < 2) return raiseAlert(err_TooFewTickets); // Not enough tickets
+    if (grandTotal > gc_tooManyTickets) return raiseAlert(err_TooManyTickets); // Too many tickets
 
-    document.querySelectorAll('#registration input').forEach((element) => { element.disabled = true });
-    document.querySelectorAll('[title="color"], [title="letter"]').forEach((element) => { element.disabled = true });
-    document.querySelectorAll('.cancel-x').forEach((element) => { element.classList.remove("remove-item") });
+    gv_grandTotal = grandTotal;
+    gv_ticketFontSize = `${24 + (7 - longestLabelLen) * 4}vmin`;
+
+    // UI updates
+    disableElements('#registration input, [title="color"], [title="letter"]');
+    document.querySelectorAll('.cancel-x').forEach(el => el.classList.remove("remove-item"));
 
     window.scrollTo(0, 0);
+    showElement('#read-only', 'grid');
+    document.querySelector('#review-button').style.opacity = '1';
 
-    document.querySelector('#page-heading').textContent = 'REGISTERED TICKETS';
-    document.querySelector('#read-only').style.display = 'grid';
-    document.querySelector('#review-button').style.opacity = '1.0';
-    
-    selection = document.querySelector('#registration');
+    const selection = document.querySelector('#registration');
     selection.scrollTop = 0;
     selection.style.display = 'none';
 
-    // Switch page
-    document.querySelector('#winner-ticket').style.display = 'flex';
+    showElement('#present-winner', 'flex');
+    enableElements('#draw');
+    disableElements('#prev', '#next');
 
-    document.querySelector('#draw').disabled = false;
-    document.querySelector('#prev').disabled = true;
-    document.querySelector('#next').disabled = true;
-    
+    document.querySelector('#ticketButtons.button-row').style.bottom = '0px';
+
+    gv_activeMode = 'ready';
 }
 
 // Regret registration
 function regretRegistration() {
 
-    document.querySelectorAll('input').forEach((element) => { element.disabled = false });
-    document.querySelectorAll('.select-color, .select-letter').forEach((element) => { element.disabled = false });
+    enableElements('input, .select-color, .select-letter');
     document.querySelectorAll('.cancel-x').forEach((element) => { element.classList.add("remove-item") });
 
     window.scrollTo(0, 0);
 
-    document.querySelector('#page-heading').textContent = 'REGISTER TICKETS';
-    document.querySelector('#read-only').style.display = 'none';
+    // setText('#page-heading', 'REGISTER TICKETS');
+    hideElement('#read-only');
     document.querySelector('#review-button').style.opacity = '0.3';
    
-    // selection = document.querySelector('#advert').style.display = 'none';
     let selection = document.querySelector('#registration');
     selection.scrollTop = 0;
     selection.style.display = 'block';
 
     // Switch page
-    selection = document.querySelector('#winner-ticket').style.display = 'none';
+    hideElement('#present-winner');
     
-    document.querySelector('#draw').disabled = true;
+    disableElements('#draw');
+    document.querySelectorAll('.button-set').forEach((element) => { element.style.bottom = '' });
+
+    gv_activeMode = 'input';
     
 }
 
 // Remove an item
-function removeItem(element) {
+function deleteCurrentRow(element) {
 
     let selection = document.querySelectorAll('[aria-label="inputRecord"]');
 
@@ -443,11 +538,9 @@ function removeItem(element) {
         // Renumber the form items and adjust the sets of overlaps
         for (let i = 0; i < selection.length; i++) {
             if (i === removed_item_idx) continue;
-
+           
             // Renumber the succeeding rows
-            if (i > removed_item_idx) {
-                selection[i].querySelector('.item-no').textContent = i;
-            }
+            if (i > removed_item_idx) setText('.item-no', i, selection[i]);
 
             // Delete the removed item from the current set of overlaps
             gv_overlaps[i].delete(removed_item_idx);
@@ -473,12 +566,12 @@ function removeItem(element) {
         selection[0].querySelector('[title="letter"]').value = '';
         selection[0].querySelector('[title="first"]').value = 1;
         selection[0].querySelector('[title="last"]').value = '';    
-        selection[0].querySelector('.num-tickets').textContent = '0';
+        setText('.num-tickets', 0, selection[0]);
         gv_overlaps = [new Set([NaN])];
         gv_grandTotal = 0;
     }
 
-    document.querySelector('#totalNo').textContent = gv_grandTotal || '0';
+    setText('#totalNo', gv_grandTotal || 0);
 
     setStatusLights();
 
@@ -491,61 +584,69 @@ function resetApp() {
     gv_drawHistory = [];
     gv_all_tickets = {};
     gv_historyIndex = -1;
-    gv_color_index = -1;
+    gv_color_index = 15;
     gv_grandTotal = 0;
 
     // Stop spinner
     clearTimeout(gv_countdown);
     document.querySelector('html').style.backgroundColor = 'whitesmoke';
-    document.querySelector('#spinner-panel').style.display = 'none';
+    hideElement('#spinner-panel');
      
     // Hide resetApp card
-    document.querySelector('#reset').style.display = 'none';
+    hideElement('#reset');
     document.querySelectorAll('#reset button').forEach((element) => { element.style.width = '4em' });
 
     // Switch page
-    document.querySelector('#registration').style.display = 'block';
-    document.querySelector('#winner-ticket').style.display = 'none';
+    showElement('#registration');
+    hideElement('#present-winner');
 
-    document.querySelector('#page-heading').textContent = 'TICKET REGISTRATION';
-    document.querySelector('#read-only').style.display = 'none';
-    document.querySelector('#reset-warning').textContent = 'This will reset the app.';
+    // setText('#page-heading', 'TICKET REGISTRATION');
+    hideElement('#read-only');
+    setText('#reset-warning', 'This will reset the app.')
 
     // Remove all but one items
     document.querySelectorAll('[aria-label="inputRecord"]').forEach((element, idx) => { if (idx > 0) element.remove(); });
     
-    let colorClass = nextColor();
+    const select = document.getElementById("letterSelect");
+
+    for (let i = 65; i <= 90; i++) {
+        const letter = String.fromCharCode(i); // ASCII codes for A-Z
+        const option = document.createElement("option");
+        option.text = letter;
+        select.add(option);
+    }
+        
+    const colorClass = nextColor();
     document.querySelector('[aria-label="inputRecord"]').className = colorClass;
     document.querySelector(`[title="color"] .${colorClass}`).selected = 'selected';
     document.querySelector('[title="letter"]').value = '';
     document.querySelector('[title="first"]').value = 1;
     document.querySelector('[title="last"]').value = '';    
-    document.querySelector('.num-tickets').textContent = '0';
-
-    // Make inputs editable
-    document.querySelectorAll('input').forEach((element) => { element.disabled = false });
+    setText('.num-tickets', 0);
         
-    document.querySelector('#menu-icon').style.color = 'black';
-    document.querySelector('#insert').disabled = false;
-    document.querySelector('#repetition').style.display = 'none';
-    document.querySelector('#winner-ticket').removeAttribute('class');
-    document.querySelector('#ticket-text').innerHTML = gc_splashScreenImg;
-    document.querySelector('#logItem').textContent = ' ';
-    document.querySelector('#totalNo').textContent = '0';
-    document.querySelector('#prev').disabled = true;
-    document.querySelector('#next').disabled = true;
+    // Make inputs editable
+    enableElements('input, #insert, .select-color, .select-letter');
+    disableElements('#prev, #next');
+        
+    hideElement('#repetition');
+    document.querySelector('#present-winner').removeAttribute('class');
+    // document.querySelector('#ticket-text').innerHTML = gc_splashScreenImg;
+    document.querySelector('#ticket-text').innerHTML = splashHTML;
+    setText('#logItem', ' ');
+    setText('#totalNo', 0);
     document.querySelector('#review-button').style.opacity = '0.3';
-    document.querySelector('#draw').style.opacity = 1;
-    document.querySelector('#regret').style.display = 'none';
+    hideElement('#regret');
 
     document.querySelector('.status-light').style.backgroundColor = 'Orange';
     document.querySelector('.num-tickets').textContent = '0';
 
-    document.querySelectorAll('.select-color, .select-letter').forEach((element) => { element.disabled = false });
     document.querySelectorAll('.cancel-x').forEach((element) => { element.classList.add('remove-item') });
-    document.querySelectorAll('.buttonSet').forEach((element) => { element.style.display = 'inline-block' });
+    document.querySelectorAll('.button-set').forEach((element) => { element.style.display = 'inline-block' });
+    document.querySelectorAll('.button-set').forEach((element) => { element.style.bottom = '' });
 
-    document.querySelector('#close').style.display = 'none';
+    hideElement('#close');
+
+    gv_activeMode = 'input';
 
 }
 
@@ -577,24 +678,23 @@ function traverseHistory(incr) {
     // Activate or deactivate the 'Next' button
     document.querySelector('#next').disabled = (gv_historyIndex == gv_drawHistory.length - 1) ? true : false;
     
-    document.querySelector('#winner-ticket').className = gv_drawHistory[gv_historyIndex][0];
-    // Show a big R to remind the user that this is a repetition
-    document.querySelector('#repetition').style.display = 'flex';
-    document.querySelector('#ticket-text').textContent = gv_drawHistory[gv_historyIndex][1].toString();
+    document.querySelector('#present-winner').className = gv_drawHistory[gv_historyIndex][0];
 
-    document.querySelector('#logItem').textContent = gv_historyIndex + 1;
-    document.querySelector('#menu-icon').style.color = getComputedStyle(document.querySelector('#ticket-text')).color;
+    // Show a big R to remind the user that this is a repetition
+    showElement('#repetition', 'flex');
+    setText('#ticket-text', gv_drawHistory[gv_historyIndex][1]);
+
+    setText('#logItem', gv_historyIndex + 1);
+    copyComputedStyle('#ticket-text', '#menu-icon' ,'color');
     
 }
 
 // Events
-
 slider.oninput = function() {
-    slider.textContent = this.value;
+    setText('#slider', this.value);
     document.querySelector('#rangeValue').textContent = parseFloat(slider.value).toFixed(1);
 }
 
-document.querySelector('tbody').addEventListener('input', evalRegistationEvent);
 document.querySelector('tbody').addEventListener('change', evalRegistationEvent);
 document.querySelector('tbody').addEventListener('click', evalRegistationEvent);
 document.querySelector('#registrationButtons').addEventListener('click', evalRegistationButtonEvent);
@@ -602,33 +702,56 @@ document.querySelector('#ticketButtons').addEventListener('click', evalDrawingEv
 document.addEventListener('click', evalModalEvent);
 document.addEventListener('keyup', evalShortcut, true);
 
-// Evaluate events
+// The debounce function assures smooth performance and reduce redundant calculations as somebody types
+function debounce(func, delay = 300) {
+    let timer;
+    return function (...args) {
+        clearTimeout(timer);
+        timer = setTimeout(() => func.apply(this, args), delay);
+    };
+}
 
+// Evaluate events
 function evalRegistationEvent(event) {
 
-    if (event.target.className == 'select-color') {
-        event.target.closest('tr').className = event.target.value;
-        checkOverlaps(event);
-    }
-    else if (event.target.className == 'select-letter') {
-        checkOverlaps(event);
-    }
-    else if (event.target.className == 'ticket-number') {
-        countTickets(event);
-        checkOverlaps(event);
-    }
-    else if (event.target.classList.contains('remove-item')) { 
-        removeItem(event.target);
+    if (event.type === 'click') {
+        if (event.target.classList.contains('remove-item')) {
+            // Delete the entire row
+            deleteCurrentRow(event.target);
+            event.stopPropagation();
+        }
+        return;
     }
 
-    event.stopPropagation();
+    const row = event.target.closest('tr');
+    if (!row) return; // Defensive check
+
+    if (event.target.classList.contains('select-color')) {
+        row.className = event.target.value;
+        checkOverlaps(event);
+
+        gv_color_index = gc_ticketColors.indexOf(row.className);
+        return;
+    }
+    
+    if (event.target.classList.contains('select-letter')) {
+        checkOverlaps(event);
+        return;
+    }
+
+    if (event.target.classList.contains('ticket-number')) {
+        debounce(countTickets)(event);
+        debounce(checkOverlaps)(event);
+        return;
+    }
+
 }
 
 function evalRegistationButtonEvent(event) {
 
     switch (event.target.id) {
         case 'insert':
-            addRecord();
+            addNewRow();
             break;
         case 'ready':
             registerTickets();
@@ -644,11 +767,14 @@ function evalRegistationButtonEvent(event) {
 
 function evalModalEvent(event) {
 
-    if (event.target.id == 'setDisclosureTime') {
-        resetDisclosureTime();
+    if (event.target.id == 'setSuspensionTime') {
+        resetSuspensionTime();
+        return;
     }
-    else if (event.target.classList.contains('w3-modal')) {
+
+    if (event.target.classList.contains('w3-modal')) {
         event.target.style.display = 'none';
+        return;
     }
 }
 
@@ -671,18 +797,41 @@ function evalDrawingEvents(event) {
     event.stopPropagation();     
 }
 
+// Highlight active mode on Help screen
+function highlightActiveMode(currentMode) {
+    const modeHeadings = {
+        input: 'mode-input',
+        ready: 'mode-ready',
+        draw : 'mode-draw'
+    };
+
+    // Clear all highlights from headings
+    Object.values(modeHeadings).forEach(id => {
+        const heading = document.getElementById(id);
+        if (heading) {
+            heading.textContent = heading.textContent.replace(/ ★/, '');
+        }
+    });
+
+    // Highlight the active heading
+    const activeId = modeHeadings[currentMode];
+    const activeHeading = document.getElementById(activeId);
+    if (activeHeading && !activeHeading.textContent.match(/★$/)) {
+        activeHeading.textContent += ' ★';
+    }
+}
 
 // Key events
 function evalShortcut(event) {
 
     // Resetting mode
     if (document.querySelector('#reset').style.display == 'block') {
-        switch (event.keyCode) {
-            case 78: { // character N
-                document.querySelector('#reset').style.display = 'none';
+        switch (event.key) {
+            case 'N': {
+                hideElement('#reset');
                 break;
             } 
-            case 89: { // charater Y
+            case 'Y': {
                 resetApp();
                 break;
             }
@@ -692,13 +841,13 @@ function evalShortcut(event) {
 
     // Registration mode
     if (document.querySelector('#read-only').style.display == 'none') {
-        switch (event.keyCode) {
-            case 34: { // <PageDown>        => ready
+        switch (event.key) {
+            case 'PageDown': { // ready
                 registerTickets();
                 break;
             }    
-            case 45: { // <Insert>          => insert
-                addRecord();
+            case 'Insert': { // insert new row
+                addNewRow();
                 break;
             }
         }
@@ -706,30 +855,30 @@ function evalShortcut(event) {
     }
 
     // Drawing mode
-    if (document.querySelector('#winner-ticket').style.display == 'flex') {
-        switch (event.keyCode) {
-            case 13: // <Enter> or <Space>  => draw
-            case 32: {
+    if (document.querySelector('#present-winner').style.display == 'flex') {
+        switch (event.key) {
+            case 'Enter': // draw
+            case ' ': {
                 drawTicket();
                 break;
             }
-            case 33: { // <PageUp>          => regret
+            case 'PageUp': { // regret
                 if (gv_drawHistory.length === 0)
                     regretRegistration();
                 else
                     startReview();
                 break;
             }        
-            case 34: { // <PageDown>        => ready
+            case 'PageDown': { // ready
                 registerTickets();
                 break;
             }          
-            case 37: { // <LeftArrow>       => prev
+            case 'ArrowLeft': { // prev
                 traverseHistory(-1);
                 break;
             } 
             
-            case 39: { // <RightArrow>      => next
+            case 'ArrowRight': { // next
                 traverseHistory(1);
                 break;
             }
@@ -739,32 +888,32 @@ function evalShortcut(event) {
 
     // Review mode
     if (document.querySelector('#read-only').style.display == 'grid') {
-        if (event.keyCode == 34) { // <PageDown>
+        if (event.key == 'PageDown') { // <PageDown>
             endReview();  // close
         }
         return;
     }
 }    
 
-function getRandomLetter() {
-return String.fromCharCode(65 + Math.floor(Math.random() * 26));
+function rgbToHex(rgb) {
+    const [r, g, b] = rgb.match(/\d+/g).map(Number);
+    return "#" + [r, g, b].map(x => x.toString(16).padStart(2, '0')).join('');
 }
 
-function getRandomNumber() {
-return Math.floor(Math.random() * 999) + 1;
-}
+const spinnerColors = Array.from(
+    document.querySelectorAll('.card')).map(el => {
+        return rgbToHex(window.getComputedStyle(el).backgroundColor);
+    }
+);
 
-function updateCardIfZIndexZero(card) {
-const z = window.getComputedStyle(card).zIndex;
+console.debug(spinnerColors);
 
-if (z === '0') {
-    seenAtZ0.add(card);
-} else {
-    // Reset tracker when it's not at z-index 0 anymore
-    seenAtZ0.delete(card);
+/* ─── Register ServiceWorker ─── */
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker
+            .register('js/sw.js')
+            .then(ref => console.log('✅ Service worker registered'))
+            .catch(err => console.log(`❌ Service worker failed: ${err}`))
+    });
 }
-}
-
-setInterval(() => {
-cards.forEach(card => updateCardIfZIndexZero(card));
-}, 200); // Check 5 times per second

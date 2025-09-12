@@ -1,27 +1,60 @@
 {
-  "name": "Tombola Draw",
-  "short_name": "Tombola Draw",
-  "icons": [
-    {
-      "src": "images/top-hat-001-ap.png",
-      "sizes": "57x57"
-    },
-    {
-      "src": "images/top-hat-001-sm.png",
-      "sizes": "192x192",
-      "purpose": "maskable"
-    },
-    {
-      "src": "images/top-hat-001-lg.png",
-      "sizes": "512x512"
-    }
-  ],
-  "start_url": "/TombolaDraw/",
-  "display": "standalone",
-  "background_color": "#006680",
-  "theme_color": "#006680",
-  "scope": "/TombolaDraw/",
-  "iarc_rating_id": "2686b608-e559-4fa0-9c2c-cba9705b143d",
-  "description": "An app for fair ticket drawings.",
-  "categories": [ "entertainment", "raffle", "tombola", "random drawing" ]
+    "name": "Tombola Draw",
+    "short_name": "Tombola Draw",
+    "icons": [
+        {
+        "src": "images/favicon1/favicon-36x36.png",
+        "sizes": "36x36",
+        "type": "image/png",
+        "density": "0.75"
+        },
+        {
+        "src": "images/favicon1/favicon-48x48.png",
+        "sizes": "48x48",
+        "type": "image/png",
+        "density": "1.0"
+        },
+        {
+        "src": "images/favicon1/favicon-72x72.png",
+        "sizes": "72x72",
+        "type": "image/png",
+        "density": "1.5"
+        },
+        {
+        "src": "images/favicon1/favicon-96x96.png",
+        "sizes": "96x96",
+        "type": "image/png",
+        "density": "2.0"
+        },
+        {
+        "src": "images/favicon1/favicon-144x144.png",
+        "sizes": "144x144",
+        "type": "image/png",
+        "density": "3.0"
+        },
+        {
+        "src": "images/favicon1/favicon-192x192.png",
+        "sizes": "192x192",
+        "type": "image/png",
+        "density": "4.0"
+        },
+        {
+        "src": "images/favicon1/favicon-512x512.png",
+        "sizes": "512x512",
+        "type": "image/png",
+        "density": "5.0"
+        }
+    ],   
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#006680",
+    "theme_color": "#006680",
+    "scope": "/",
+    "iarc_rating_id": "2686b608-e559-4fa0-9c2c-cba9705b143d",
+    "description": "An app for providing fair ticket drawings.",
+    "lang": "en",
+    "categories": [
+        "entertainment",
+        "raffle"
+    ]
 }
