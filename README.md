@@ -5,7 +5,6 @@ _Tombola Draw_ is an app for fair lottery drawings. You register all the valid t
 
 <div align ="center">
   <img src="images/top-hat-001-ap.png" alt="Tombola Draw Icon" width="80px">
-  <img src="images/tombola_draw_icon_tr.png" alt="Tombola Draw Icon" width="80px" style="background-color: #006689">
 </div>
 
 ## Properties
