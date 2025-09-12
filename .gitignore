@@ -67,3 +67,7 @@ node_modules/
 
 # Visual Studio directory
 .vs/
+
+# Alternative icon files
+public/images/favicon[1-9]{1,}/
+public/images/tombola_draw_icon2.png

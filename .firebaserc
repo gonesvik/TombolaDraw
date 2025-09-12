@@ -1,0 +1,8 @@
+{
+  "projects": {
+    "default": "tombola-draw-8bcfb",
+    "prod": "tombola-draw-8bcfb"
+  },
+  "targets": {},
+  "etags": {}
+}

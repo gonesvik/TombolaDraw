@@ -1,0 +1,17 @@
+This favicon was generated using the following font: 
+
+
+Font Family: Sansita Swashed Medium
+
+Font Full Name: Sansita Swashed Medium
+
+Font Designer: Pablo Cosgaya (www.omnibus-type.com)
+
+Font Source: https://fonts.gstatic.com/s/sansitaswashed/v18/BXR8vFfZifTZgFlDDLgNkBydPKTt3pVCeYWqJnZSW4ZpbToVehmEa4Q.ttf
+
+Font License: This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: https://scripts.sil.org/OFL (https://scripts.sil.org/OFL)
+
+Font Manufacturer: Omnibus-Type (www.omnibus-type.com)
+
+Font Version:Version 1.003
+
