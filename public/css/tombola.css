@@ -188,6 +188,7 @@ select optgroup, select option {
 #next, #prev {
     opacity: 0.7;
     font-size: 35px;
+    font-family: sans-serif;
 }
 
 #read-only {
@@ -209,7 +210,7 @@ select optgroup, select option {
 }
 
 #watermark {
-    background-image: url(../images/tombola_draw_icon_wh2.svg);
+    background-image: url(../images/tombola_draw_icon_wh2.png);
     background-repeat: no-repeat;
     background-position: center;
     background-size: 50vmin;
