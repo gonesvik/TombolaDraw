@@ -4,7 +4,7 @@
 _Tombola Draw_ is an app for fair lottery drawings. You register all the valid tickets with a number interval, a ticket color and optionally a letter. You can register multiple, non-overlapping series of tickets.
 
 <div align ="center">
-  <img src="images/top-hat-001-ap.png" alt="Tombola Draw Icon" width="80px">
+  <img src="public/images/top-hat-001-ap.png" alt="Tombola Draw Icon" width="80px">
 </div>
 
 ## Properties
