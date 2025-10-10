@@ -47,11 +47,11 @@
     ],   
     "start_url": "/index.html",
     "display": "standalone",
-    "background_color": "white",
+    "background_color": "#ffffff",
     "theme_color": "#006680",
     "scope": "/",
     "iarc_rating_id": "2686b608-e559-4fa0-9c2c-cba9705b143d",
-    "description": "An app for providing fair ticket drawings.",
+    "description": "Tombola Draw is an app for fair and transparent ticket raffles.",
     "lang": "en",
     "categories": [
         "entertainment",

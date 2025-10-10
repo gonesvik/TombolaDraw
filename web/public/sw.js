@@ -1,10 +1,10 @@
-const cacheName = 'v3';
+const cacheName = 'tombola_draw_v4';
 
 // A list of local resources we always want to be cached.
 const cacheAssets = [
-  '../index.html',
-  '../css/tombola.css',
-  '../js/main.js'
+  './index.html',
+  './css/tombola.css',
+  './js/main.js'
 ];
 
 // Call install event
