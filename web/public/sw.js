@@ -2,16 +2,16 @@ const cacheName = 'tombola_draw_v4';
 
 // A list of local resources we always want to be cached.
 const cacheAssets = [
-  './index.html',
-  './css/tombola.css',
-  './js/main.js'
+  '/index.html',
+  '/css/tombola.css',
+  '/js/main.js'
 ];
 
-// Call install event
-self.addEventListener('install', e => {
+// Install event
+self.addEventListener('install', event => {
   console.log('Service worker installed');
 
-  e.waitUntil(
+  event.waitUntil(
     caches
       .open(cacheName)
       .then(cache => {
@@ -22,10 +22,10 @@ self.addEventListener('install', e => {
   );
 });
 
-// Call activate event
-self.addEventListener('activate', e => {
+// Activate event
+self.addEventListener('activate', event => {
   console.log('Service worker activated');
-  e.waitUntil(
+  event.waitUntil(
     caches.keys().then(cacheNames => {
       return Promise.all(
         cacheNames.map(cache => {
@@ -40,13 +40,13 @@ self.addEventListener('activate', e => {
 });
 
 // Call fetch event
-self.addEventListener('fetch', e => {
+self.addEventListener('fetch', event => {
   // Skip cross-origin requests, like those for Google Analytics.
-  if (e.request.url.startsWith(self.location.origin)) {
+  if (event.request.url.startsWith(self.location.origin)) {
     console.log('Service worker fetching');
-    e.respondWith(
-      fetch(e.request)
-      .catch(() => caches.match(e.request))      
+    event.respondWith(
+      fetch(event.request)
+      .catch(() => caches.match(event.request))
     );
   }
 });

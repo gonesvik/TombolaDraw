@@ -912,7 +912,7 @@ console.debug(spinnerColors);
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
         navigator.serviceWorker
-            .register('js/sw.js')
+            .register('/sw.js')
             .then(ref => console.log('✅ Service worker registered'))
             .catch(err => console.log(`❌ Service worker failed: ${err}`))
     });
