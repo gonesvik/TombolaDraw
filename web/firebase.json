@@ -1,4 +1,3 @@
-
 {
   "hosting": {
     "public": "public",
@@ -7,10 +6,21 @@
       "**/.*",
       "**/node_modules/**"
     ],
+    "headers": [
+      {
+        "source": "/manifest.webmanifest",
+        "headers": [
+          {
+            "key": "Content-Type",
+            "value": "application/manifest+json"
+          }
+        ]
+      }
+    ],
     "rewrites": [
       {
-        "source": "/manifest.json",
-        "destination": "/manifest.json"
+        "source": "/manifest.webmanifest",
+        "destination": "/manifest.webmanifest"   
       },
       {
         "source": "/sw.js",
@@ -23,3 +33,4 @@
     ]
   }
 }
+
