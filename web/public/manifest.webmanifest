@@ -1,0 +1,52 @@
+{
+    "name": "Tombola Draw",
+    "short_name": "Tombola Draw",
+    "id": "tombola-draw-8bcfb",
+    "start_url": "/index.html",
+    "scope": "/",
+    "display": "standalone",
+    "orientation": "any",
+    "background_color": "#ffffff",
+    "theme_color": "#006680",
+    "iarc_rating_id": "2686b608-e559-4fa0-9c2c-cba9705b143d",
+    "description": "Tombola Draw is an app for fair and transparent ticket raffles.",
+    "lang": "en",
+    "categories": [
+        "entertainment",
+        "raffle"
+    ],
+    "icons": [
+        {
+            "src": "images/favicons/favicon-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "images/favicons/favicon-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ],
+    "screenshots": [
+        {
+            "src": "images/screenshots/screenshot01.png",
+            "sizes": "413x256",
+            "type": "image/webp"
+        },
+        {
+            "src": "images/screenshots/screenshot02.png",
+            "sizes": "412x296",
+            "type": "image/webp"
+        },
+        {
+            "src": "images/screenshots/screenshot03.png",
+            "sizes": "177x296",
+            "type": "image/webp"
+        },
+        {
+            "src": "images/screenshots/screenshot04.png",
+            "sizes": "177x296",
+            "type": "image/webp"
+        }
+    ]
+}
