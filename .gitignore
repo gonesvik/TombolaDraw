@@ -17,6 +17,9 @@ firebase-debug.*.log*
 # it commented so all members can deploy to the same project(s) in .firebaserc.
 # .firebaserc
 
+# Keystores
+*.keystore
+
 # Runtime data
 pids
 *.pid
@@ -79,22 +82,24 @@ public/images/tombola_draw_icon2.png
 # Android App Bundle and related build files (TWA Project)
 # ----------------------------------------------------------------------
 
-# Ignorer byggeutdata i android_prod-mappen
-/android_prod/build
-/android_prod/.gradle
-/android_prod/captures
+/android_prod/
 
-# Ignorer alle APK, AAB og signeringstempfiler i android_prod-mappen
-/android_prod/*.apk
-/android_prod/*.aab
-/android_prod/*.apks
-/android_prod/app-release-signed.apk.idsig
-
-# Ignorer Android Studio-cache/tempfiler i undermapper
-/android_prod/.idea/
-/android_prod/*.iml
-/android_prod/local.properties
-/android_prod/app/.cxx
-/android_prod/app/build
-/android_prod/app/release
+## Ignorer byggedata i android_prod-mappen
+#/android_prod/build
+#/android_prod/.gradle
+#/android_prod/captures
+#
+## Ignorer alle APK, AAB og signeringstempfiler i android_prod-mappen
+#/android_prod/*.apk
+#/android_prod/*.aab
+#/android_prod/*.apks
+#/android_prod/app-release-signed.apk.idsig
+#
+## Ignorer Android Studio-cache/tempfiler i undermapper
+#/android_prod/.idea/
+#/android_prod/*.iml
+#/android_prod/local.properties
+#/android_prod/app/.cxx
+#/android_prod/app/build
+#/android_prod/app/release
 
