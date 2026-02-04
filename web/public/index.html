@@ -31,7 +31,7 @@
             <div class="menu-line" onclick="document.querySelector('#reset').style.display='block'">Reset</div>
             <div class="menu-line" onclick="document.querySelector('#setSuspensionTime').style.display='block'">Suspension time</div>
             <div class="menu-line" onclick="startReview()" id="review-button">Review ticket register</div>
-            <div class="menu-line" onclick="showHelp()" id="help-button"">Help</div>
+            <div class="menu-line" onclick="showHelp()" id="help-button">Help</div>
             <div class="menu-line" onclick="document.querySelector('#about').style.display='block'">About</div>
         </div>
     </div>
@@ -92,7 +92,7 @@
 
                     <td data-label="A-Z">
                         <select class="select-letter" title="letter" name="letter" id="letterSelect">
-                            <option label=""></option>
+                            <option label="" aria-label="No letter">&nbsp;</option>
                         </select>
                     </td>
 
@@ -259,8 +259,8 @@
             </header>
             <div class="w3-container">
                 <p>
-                    Tombola Draw<br/>
-                    Version: <span id="version"></span><br/>
+                    Tombola Draw<br>
+                    Version: <span id="version"></span><br>
                     <span id="author">By G.O. Nesvik</span>
                 </p>
                 <p>An app for fair ticket raffles.</p>
