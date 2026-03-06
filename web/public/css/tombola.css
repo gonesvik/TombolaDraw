@@ -643,7 +643,6 @@ select optgroup, select option {
 .card.two   { background-color: #00BCD4; animation-name: position2; }
 .card.three { background-color: #4CAF50; animation-name: position3; }
 .card.four  { background-color: #FFC107; animation-name: position4; }
-/* blue, red, green, #FFF000 */
 
 /* Square path animations */
 
@@ -679,19 +678,20 @@ select optgroup, select option {
     100% { transform: translate(-50%, -50%) translate(var(--motion-distance-l), var(--motion-distance-b)) skewY(-10deg) scale(0.9); z-index: 1; }
 }
 
-/**/
+/* Progress bar styles */
 
 #suspensionBar {
     width: 33vmin;
     /*background: #ddd;*/
     display: block;
     bottom: 25vh;
-    position: fixed;   
+    position: fixed;
 }
 
 #barFill {
     height: 10px;
-    background: orange;
     width: 100%;
+    background: #9C27B0;
+    transform-origin: center;
 }
 

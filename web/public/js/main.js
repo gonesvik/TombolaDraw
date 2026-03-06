@@ -1,9 +1,9 @@
 ﻿'use strict';
 
-const gc_version = '5.2.1';
+const gc_version = '5.3.0';
 const gc_author = 'By Geir Ove Nesvik';
-const gc_max_ticket_num = 99999;    // No ticket number can be larger than this number
-const gc_tooManyTickets = 99999;    // A warning will be raised if the sum of tickets is greater than this number
+const gc_max_ticket_num = 99999;    // A ticket number can't be larger than this number
+const gc_tooManyTickets = 99999;    // A warning will be raised if the number of tickets is greater than this value
 const gc_reset_warning = 'This will end the current session and reset the app.';
 const splashHTML = `
     <div id="splash-screen" class="w3-card-4 color-slate-teal splash-font">
@@ -26,7 +26,7 @@ const err_TicketNumberTooBig = 102;
 const err_TooManyTickets = 103;
 const err_OverlappingRanges = 104;
 const err_NonIntegerNumberDetected = 105;
-const io_delay = 150// ms
+const io_delay = 150; // ms
 
 let gv_ticketFontSize = '48vmin';   // Standard font size for tickets
 let gv_activeMode = 'input';        // Initial mode
@@ -40,6 +40,11 @@ let gv_countdown;
 
 let slider = document.querySelector('#suspension-time');
 let suspensionTime = slider.value;
+
+// Update value whenever the slider moves
+slider.addEventListener('input', () => {
+    suspensionTime = slider.value;
+});
 
 /* Some helper functions */
 
@@ -84,6 +89,15 @@ function toggleElement(condition, selector) {
 document.querySelector('#version').textContent = gc_version;
 document.querySelector('#author').textContent = gc_author;
 document.querySelector('#rangeValue').textContent = parseFloat(suspensionTime).toFixed(1);
+
+const select = document.querySelector('.select-letter');
+
+for (let i = 65; i <= 90; i++) {
+    const letter = String.fromCharCode(i); // ASCII codes for A-Z
+    const option = document.createElement("option");
+    option.text = letter;
+    select.add(option);
+}
 
 resetApp();
 
@@ -269,13 +283,14 @@ function startCountdown(countdownPeriod) {
     const barFill = document.getElementById("barFill");
 
     // initiate the bar ...
-    barFill.style.transition = `width ${countdownPeriod}s linear`;
-    barFill.style.width = '100%';
+    barFill.style.transform = 'scaleX(1)';
+    barFill.style.transition = `transform ${countdownPeriod}s linear`;
+    
 
     // and start the countdown
     setTimeout(() => {
-        barFill.style.width = '0%';
-    }, 80); // The delay ensures that the browser registers the initial state
+        barFill.style.transform = 'scaleX(0)';
+    }, 80); // The delay ensures that the browser will register the initial state
 
 }
 
@@ -340,20 +355,13 @@ function startReview() {
     hideElement('#present-winner');
     document.querySelector('html').style.backgroundColor = 'beige';
    
-    //// document.querySelector('#menu-icon').style.color = 'black';
+    document.querySelector('#menu-icon').style.color = 'black';
     showElement('#registration');
     
     document.querySelectorAll('.button-set').forEach((element) => { element.style.display = 'none' });
 
     showElement('#close', 'inline-block');
 
-}
-
-// Help information
-function showHelp() {
-    // Mark the current mode in the Help screen
-    highlightActiveMode(gv_activeMode);
-    showElement('#help');
 }
 
 // Back to drawing
@@ -386,7 +394,7 @@ function endReview() {
 // Set the dislosure time i.e. the spinning time of the spinner
 function setSuspensionTime() {
 
-    suspensionTime = slider.value;
+    ////suspensionTime = slider.value;
     // Closing modal page
     hideElement('#setSuspensionTime');
 
@@ -430,6 +438,13 @@ function raiseAlert(message_no) {
 
     document.querySelector("#alert-text").textContent = err_message;
     showElement('#alert');
+}
+
+// Help information
+function showHelp() {
+    // Mark the current mode in the Help screen
+    highlightActiveMode(gv_activeMode);
+    showElement('#help');
 }
 
 
@@ -606,15 +621,6 @@ function resetApp() {
 
     // Remove all but one items
     document.querySelectorAll('[aria-label="inputRecord"]').forEach((element, idx) => { if (idx > 0) element.remove(); });
-    
-    const select = document.getElementById("letterSelect");
-
-    for (let i = 65; i <= 90; i++) {
-        const letter = String.fromCharCode(i); // ASCII codes for A-Z
-        const option = document.createElement("option");
-        option.text = letter;
-        select.add(option);
-    }
         
     const colorClass = nextColor();
     document.querySelector('[aria-label="inputRecord"]').className = colorClass;
@@ -635,6 +641,7 @@ function resetApp() {
     setText('#logItem', ' ');
     setText('#totalNo', 0);
     document.querySelector('#review-button').style.opacity = '0.3';
+    document.querySelector('#draw').style.opacity = '1';
     hideElement('#regret');
 
     document.querySelector('.status-light').style.backgroundColor = 'Orange';
