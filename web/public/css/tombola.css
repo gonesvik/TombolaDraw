@@ -121,6 +121,7 @@ select optgroup, select option {
 
 #close {
     display: none;
+    background-color: beige;
 }
 
 #end {
@@ -172,6 +173,7 @@ select optgroup, select option {
 
 #menu-dropdown-hover:hover .menu-line:hover {
     background-color: rgba(0, 0, 0, 0.2);
+    /*filter: brightness(90%);*/
 }
 
 #menu-dropdown-hover:hover #menu-dropdown-content {
@@ -332,6 +334,7 @@ select optgroup, select option {
 
 .hover-effect:hover, .hover-effect:focus {
     background-color: rgba(0, 0, 0, 0.2);
+    filter: brightness(85%);
 }
 
 .num-tickets {
@@ -689,7 +692,7 @@ select optgroup, select option {
 }
 
 #barFill {
-    height: 10px;
+    height: 25px;
     width: 100%;
     background: #9C27B0;
     transform-origin: center;
