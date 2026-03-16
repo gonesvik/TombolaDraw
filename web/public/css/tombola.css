@@ -188,9 +188,10 @@ select optgroup, select option {
 }
 
 #next, #prev {
-    opacity: 0.7;
+    opacity: 1;
     font-size: x-large;
     font-family: sans-serif;
+    width: 50px;
 }
 
 #read-only {
@@ -286,6 +287,25 @@ select optgroup, select option {
     overflow: hidden;
     transition: opacity 1.2s ease-in;    
 }
+
+
+#ticket-text {
+    font-size: 36vmin;
+    width: 100%;
+    display: flex;
+    justify-content: center;   /* horizontal */
+    align-items: center;       /* vertical */
+    flex-grow: 1;              /* expand to fill the space */
+    text-align: center;
+}
+
+
+#ticketButtons {
+    display: flex;
+    justify-content: center;
+    padding: 5px;
+}
+
 
 /*** Classes ***/
 
