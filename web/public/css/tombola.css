@@ -192,6 +192,8 @@ select optgroup, select option {
     font-size: x-large;
     font-family: sans-serif;
     width: 50px;
+    margin-left: 5px;  
+    margin-right: 5px;      
 }
 
 #read-only {
@@ -299,16 +301,9 @@ select optgroup, select option {
     text-align: center;
 }
 
-
-#ticketButtons {
-    display: flex;
-    justify-content: center;
-    padding: 5px;
-}
-
-
 /*** Classes ***/
 
+/*
 .button-left {
     position: fixed;
     bottom: 5px;
@@ -320,6 +315,7 @@ select optgroup, select option {
     bottom: 5px;
     right: 0%;
 }
+    */
 
 .button-row {
     position: fixed;
@@ -327,9 +323,12 @@ select optgroup, select option {
     height: 60px;
     width: 100%;
     align-items: center;
+    display: flex;
+    justify-content: center;
+    bottom: 0px;
 }
 
-.button-set {
+.base-button {
     width: 120px;
     height: 50px;
     top: 5px;
@@ -652,7 +651,7 @@ select optgroup, select option {
     width: var(--card-width);
     height: var(--card-height);
     border-radius: 10%;
-    /*border: 1px solid white;*/
+    border: 5px solid whitesmoke;
     transform-origin: center;
     transition: transform 0.5s ease;
     animation-duration: var(--shuffle-duration);
@@ -707,14 +706,14 @@ select optgroup, select option {
     width: 33vmin;
     /*background: #ddd;*/
     display: block;
-    bottom: 25vh;
+    bottom: 2.5vh;
     position: fixed;
 }
 
 #barFill {
     height: 25px;
     width: 100%;
-    background: #9C27B0;
+    background: teal; /*#9C27B0;*/
     transform-origin: center;
 }
 
