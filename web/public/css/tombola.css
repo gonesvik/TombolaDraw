@@ -135,36 +135,32 @@ select optgroup, select option {
 }
 
 #logItem {
-    opacity: 1;
     top: 0px;
-    font-size: 5vh;
-    text-align: center;
-    height: auto;
     position: fixed;
 }
 
 #menu-dropdown-content {
-    font-size: x-large;
     cursor: auto;
     color: #000;
-    background-color: #fff;
+    background-color: whitesmoke;
     display: none;
     position: absolute;
     min-width: 360px;
-    margin-left: 15px;
-    padding: 10px 20px;
+    margin-left: 5px;
+    padding: 10px 10px;
     box-shadow: 0 4px 10px 0 rgba(0,0,0,0.2),0 4px 20px 0 rgba(0,0,0,0.2);
     top: 10px;
     left: 5px;
-    z-index: 1;
+    z-index: 3;
 }
 
 #menu-dropdown-hover {
-    position: absolute;
-    display: inline-block;
+    position: fixed;
+    left: 0px;
     top: 5px;
     z-index: 2;
 }
+
 
 #menu-dropdown-hover .menu-line {
     display: block;
@@ -176,24 +172,22 @@ select optgroup, select option {
     /*filter: brightness(90%);*/
 }
 
+
 #menu-dropdown-hover:hover #menu-dropdown-content {
     display: block;
     cursor: pointer;
 }
 
 #menu-icon {
-    font-size: 5vh;
-    position: fixed;
-    top: 0px;     
+    font-size: x-large
+    /*position: fixed;*/
+    justify-content: left;
+    z-index: 1;
+    background-color: transparent;
 }
 
 #next, #prev {
-    opacity: 1;
-    font-size: x-large;
-    font-family: sans-serif;
     width: 50px;
-    margin-left: 5px;  
-    margin-right: 5px;      
 }
 
 #read-only {
@@ -240,12 +234,8 @@ select optgroup, select option {
 }
 
 #repetition {
-    height: auto;
-    opacity: 1;
-    font-size: 5vh;
     position: fixed;
     right: 12px;
-    top: 0px;
 }
 
 /* Splash screen base styles */
@@ -282,14 +272,18 @@ select optgroup, select option {
 }
 
 #present-winner {
-    display: none;
+    display: flex;
     height: 100vh;
-    align-items: center;
     justify-content: center;
+    flex-direction: column;
     overflow: hidden;
     transition: opacity 1.2s ease-in;    
 }
 
+#ticketStatus {
+    display: flex;
+    justify-content: center;
+}
 
 #ticket-text {
     font-size: 36vmin;
@@ -317,17 +311,6 @@ select optgroup, select option {
 }
     */
 
-.button-row {
-    position: fixed;
-    text-align: center;
-    height: 60px;
-    width: 100%;
-    align-items: center;
-    display: flex;
-    justify-content: center;
-    bottom: 0px;
-}
-
 .base-button {
     width: 120px;
     height: 50px;
@@ -335,6 +318,17 @@ select optgroup, select option {
     border: 2px solid darkgray;
     background-color: transparent;
     opacity: 1;
+    font-size: large;
+}
+
+.bottom-row {
+    position: fixed;
+    height: 60px;
+    width: 100%;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    bottom: 0px;
 }
 
 .cancel-x {
@@ -400,6 +394,8 @@ select optgroup, select option {
     border: 2px solid darkgray;
 }
 
+/* Color classes for ticket status and menu items */
+
 .color-bright-blue{color:white;background-color:blue;}
 .color-bright-red{color:white;background-color:red;}
 .color-grey{color:black;background-color:gainsboro;}
@@ -431,8 +427,21 @@ select optgroup, select option {
     text-stroke: 0.5vmin black;
     line-height: 1;
 }
+menu-dropdown-hover {
+    position: absolute;
+    display: inline-block;
+    top: 5px;
+    z-index: 2;
+}
+.top-row {
+    top: 0px;
+    width: 100%;
+    display: flex;
+    font-size: xxx-large;
+    justify-content: center;    
+}
 
-.line1 {
+.splash-line1 {
     color: #C0E8F9; /*#ccffff; /*#add8e6; /* light blue */
     font-size: 11vmin;
     transform: scaleY(1.8);
@@ -440,7 +449,7 @@ select optgroup, select option {
     animation: textPop 0.6s ease-out forwards;
 }
 
-.line2 {
+.splash-line2 {
     color: #FFF4C3; /*#fffacd; /* lemon chiffon */
     font-size: 17vmin;
     transform: scaleY(1.8);
@@ -628,20 +637,17 @@ select optgroup, select option {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgb(40, 40, 40);
+    background-color: rgb(20, 60, 60);
     display: flex;
     justify-content: center;
-    align-items: center;
 }
 
 .spinner {
-    position: relative;
     width: 40vmin;
     height: 40vmin;
     display: flex;
     justify-content: center;
     align-items: center;
-    /*border: 2px dashed cyan;*/
 }
 
 .card {

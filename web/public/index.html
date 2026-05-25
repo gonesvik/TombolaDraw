@@ -26,7 +26,7 @@
 <body id="app-tombola-draw">
 
     <div id="menu-dropdown-hover">
-        <button id="menu-icon" type="submit">&#9776;</button>
+        <button id="menu-icon" class="top-row" type="submit">&#9776;</button>
         <div id="menu-dropdown-content">
             <div class="menu-line" onclick="document.querySelector('#reset').style.display='block'">Reset</div>
             <div class="menu-line" onclick="document.querySelector('#setSuspensionTime').style.display='block'">Suspension time</div>
@@ -124,7 +124,7 @@
 
         </table>
 
-        <div id="registrationButtons" class="button-row">
+        <div id="registrationButtons" class="bottom-row">
             <button id="insert" type="submit" class="base-button hover-effect">INSERT</button>
             <button id="ready" type="submit" class="base-button hover-effect">READY</button>
             <button id="close" type="submit" class="base-button hover-effect">CLOSE</button>
@@ -137,12 +137,14 @@
     <div id="present-winner">
 
         <!-- Winner info -->
+        <div id="ticketStatus" class="top-row">
+            <div id="logItem"></div>
+            <div id="repetition">R</div>
+        </div>       
         <div id="ticket-text"></div>
-        <div id="logItem"></div>
-        <div id="repetition">R</div>
 
         <!-- Icons and commands at the bottom of the app -->
-        <div id="ticketButtons" class="button-row">
+        <div id="ticketButtons" class="bottom-row">
             <button id="prev" type="submit" class="base-button hover-effect" aria-label="Previous">&#9664;</button>
             <button id="regret" type="submit" class="base-button hover-effect">BACK</button>
             <button id="draw" type="submit" class="base-button hover-effect">DRAW</button>
