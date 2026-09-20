@@ -5,7 +5,7 @@
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#006680">
+    <meta name="theme-color" content="#008080">
     <meta name="description" content="An app for fair and transparent ticket raffles.">
     <meta name="keywords" content="tombola, raffle, bingo, lotto, virtual drawing machine, sampling without replacement">
     <meta name="author" content="Geir Ove Nesvik">
@@ -14,13 +14,12 @@
     <meta name="apple-mobile-web-app-title" content="Tombola Draw">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="msapplication-TileColor" content="#006680">
+    <meta name="msapplication-TileColor" content="#008080">
     <meta name="msapplication-TileImage" content="images/favicons/favicon-512x512.png">
 
     <link rel="manifest" href="manifest.webmanifest">
     <link rel="stylesheet" href="css/tombola.css">
     <link rel="icon" sizes="32x32" href="images/favicons/favicon-32x32.png" type="image/png">
-    <link rel="icon" href="images/favicons/favicon.ico" type="image/x-icon">
 </head>
 
 <body id="app-tombola-draw">
@@ -38,11 +37,11 @@
 
     <!-- Ticket registration -->
     
-    <div id="registration">
+    <main id="registration">
         <div id="watermark"></div>
         <h1 id="page-heading">TICKET REGISTER</h1>
         <p id="read-only" class="w3-card-4">READ ONLY</p>
-        <table>
+        <table id="registry_tab">
             <thead>
                 <tr>
                     <th class="elem-hide">#</th>
@@ -61,6 +60,7 @@
                 <tr aria-label="inputRecord">
 
                     <td class="item-no">1</td>
+                    
                     <td data-label="Color">
                         <select class="select-color" title="color" name="color">
                             <optgroup label="LIGHT">
@@ -95,7 +95,7 @@
                             <option label="" aria-label="No letter"></option>
                         </select>
                     </td>
-
+            
                     <td data-label="First">
                         <input type="number" class="ticket-number" min=1 max=99999 value=1 step=1 title="first" name="first">
                     </td>
@@ -130,7 +130,7 @@
             <button id="close" type="submit" class="base-button hover-effect">CLOSE</button>
         </div>
 
-    </div>
+    </main>
     
     <!--Presentation of the winner tickets -->
 
@@ -196,7 +196,7 @@
         </div>
     </div>
 
-    <!-- Set the suspension time, i.e. the fake mixing time before the next winner ticket is drawn. -->
+    <!-- Set the suspension time, i.e. the spinner time before the next winner ticket is revealed. -->
     <div id="setSuspensionTime" class="w3-modal elem-center">
         <div class="w3-modal-content w3-animate-top w3-card-4">
             <header class="w3-container color-teal">
@@ -205,7 +205,7 @@
             </header>
             <div class="elem-center">
                 <div><span id="rangeValue"></span> s</div>
-                <input type="range" min="0" max="10" value="5" step="0.5" class="slider" id="suspension-time" list="tickmarks">
+                <input type="range" min="0" max="10" value="5" step="0.5" class="time_slider" id="suspension-time" list="tickmarks">
                 <datalist id="tickmarks">
                     <!--<option value="0">-->
                     <option value="1">
@@ -238,13 +238,13 @@
                     <div><span class="shortcut">Page Down</span><span>Go to Ready mode</span></div>
                     <h3 id="mode-ready">Ready mode</h3>
                     <div><span class="shortcut">Page Up</span><span>Return to Input mode</span></div>
-                    <div><span class="shortcut">Enter</span><span>Draw the first winner</span></div>
-                    <div><span class="shortcut">Space</span><span>Same as Enter</span></div>
+                    <div><span class="shortcut">Enter or</span><span>Draw the first winner</span></div>
+                    <div><span class="shortcut">Space</span><span>ticket</span></div>
                     <h3 id="mode-draw">Drawing mode</h3>
-                    <div><span class="shortcut">Enter</span><span>Draw a new winner ticket</span></div>
-                    <div><span class="shortcut">Space</span><span>Same as Enter</span></div>
-                    <div><span class="shortcut">&#9664;</span><span>Show previous ticket</span></div>
-                    <div><span class="shortcut">&#9654;</span><span>Show next ticket</span></div>
+                    <div><span class="shortcut">Enter or</span><span>Draw the next winner</span></div>
+                    <div><span class="shortcut">Space</span><span>ticket</span></div>
+                    <div><span class="shortcut">&#9664;</span><span>Show the previous ticket</span></div>
+                    <div><span class="shortcut">&#9654;</span><span>Show the following ticket</span></div>
                     <div><span class="shortcut">Page Up</span><span>Review ticket register</span></div>
                 </div>          
             </div>

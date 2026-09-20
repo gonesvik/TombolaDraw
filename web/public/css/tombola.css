@@ -21,7 +21,7 @@ body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     width: 100%;
     margin: 0;
-    font-size: x-large;
+    font-size: 1.5rem;
 }
 
 button {
@@ -54,7 +54,7 @@ img {
 }
 
 input, select, td, th {
-    font-size: x-large;
+    font-size: 1.5rem;
 }
 
 input {
@@ -179,7 +179,7 @@ select optgroup, select option {
 }
 
 #menu-icon {
-    font-size: x-large
+    font-size: 1.5rem;
     /*position: fixed;*/
     justify-content: left;
     z-index: 1;
@@ -209,7 +209,7 @@ select optgroup, select option {
 }
 
 #watermark {
-    background-image: url(../images/tombola_draw_icon_wh2.png);
+    background-image: url(../images/tombola_draw_icon_bw.png);
     background-repeat: no-repeat;
     background-position: center;
     background-size: 50vmin;
@@ -297,20 +297,6 @@ select optgroup, select option {
 
 /*** Classes ***/
 
-/*
-.button-left {
-    position: fixed;
-    bottom: 5px;
-    left: 0%;
-}
-
-.button-right {
-    position: fixed;
-    bottom: 5px;
-    right: 0%;
-}
-    */
-
 .base-button {
     width: 120px;
     height: 50px;
@@ -318,7 +304,7 @@ select optgroup, select option {
     border: 2px solid darkgray;
     background-color: transparent;
     opacity: 1;
-    font-size: large;
+    font-size: 1.2rem;
 }
 
 .bottom-row {
@@ -363,6 +349,10 @@ select optgroup, select option {
     opacity: 0.5;
 }
 
+.select-letter option {
+    background-color: #EBEBEB; /* Light grey */
+}
+
 .shortcut {
     font-weight: bold;
     min-width: 6.3em;
@@ -372,7 +362,7 @@ select optgroup, select option {
     text-align: center;
 }
 
-.slider {
+.time_slider {
     width: 90%;
     height: 25px;
     background: #d3d3d3;
@@ -400,15 +390,15 @@ select optgroup, select option {
 .color-bright-red{color:white;background-color:red;}
 .color-grey{color:black;background-color:gainsboro;}
 .color-whitesmoke{color:black;background-color:whitesmoke;}
-.color-pale-blue{color:black;background-color:#add8e6;}
+.color-pale-blue{color:black;background-color:#ADD8E6;}
 .color-pale-green{color:black;background-color:lightgreen;}
 .color-pale-red{color:black;background-color:pink;}
-.color-pale-yellow{color:black;background-color:#fffacd;}
-.color-skybound-blue{color:white;background-color:#5e9ed6;}
-.color-meadow-mint{color:black;background-color:#81c995;}
-.color-golden-hour-glow{color:black;background-color:#f0d264;}
-.color-tangerine-drift{color:white;background-color:#e98b50;}
-.color-rosewood-blush{color:white;background-color:#d76b72;}
+.color-pale-yellow{color:black;background-color:#FFFACD;}
+.color-skybound-blue{color:white;background-color:#5E9ED6;}
+.color-meadow-mint{color:black;background-color:#81C995;}
+.color-golden-hour-glow{color:black;background-color:#F0D264;}
+.color-tangerine-drift{color:white;background-color:#E98B50;}
+.color-rosewood-blush{color:white;background-color:#D76B72;}
 .color-orange{color:black;background-color:orange;}
 .color-purple{color:white;background-color:#904FA0;}
 .color-teal{color:white;background-color: #008080;}
@@ -417,16 +407,17 @@ select optgroup, select option {
 .color-silver{color:#484848;background-color:gainsboro;}
 .color-gold {color:saddlebrown;background-color:#DF9F28;}
 .color-cerulean {color: white;background-color:#007898;}
-.color-slate-teal {color: white;background-color:#2E6A7D;}
+/*.color-slate-teal {color: white;background-color:#2E6A7D;}*/
 
-.splash-font {      
-    font-family: 'CooperBlackReg', cursive;
+.splash-font {
+    font-family: 'CooperBlackReg', 'Cooper Black', Georgia, serif;
     font-weight: 400;
+    line-height: 1.02;
     padding: 40px;
-    -webkit-text-stroke: 0.5vmin black;
-    text-stroke: 0.5vmin black;
-    line-height: 1;
+    -webkit-text-stroke: 0.015em #000;
+    color: #2C3E50;
 }
+
 menu-dropdown-hover {
     position: absolute;
     display: inline-block;
@@ -437,12 +428,12 @@ menu-dropdown-hover {
     top: 0px;
     width: 100%;
     display: flex;
-    font-size: xxx-large;
+    font-size: 2rem;
     justify-content: center;    
 }
 
 .splash-line1 {
-    color: #C0E8F9; /*#ccffff; /*#add8e6; /* light blue */
+    color: #C0E8F9;
     font-size: 11vmin;
     transform: scaleY(1.8);
     transform-origin: bottom;
@@ -450,7 +441,7 @@ menu-dropdown-hover {
 }
 
 .splash-line2 {
-    color: #FFF4C3; /*#fffacd; /* lemon chiffon */
+    color: #FFF4C3;
     font-size: 17vmin;
     transform: scaleY(1.8);
     animation: textPop 0.6s ease-out forwards;
@@ -468,9 +459,9 @@ menu-dropdown-hover {
 }
 
 .w3-animate-top{position:relative;animation:animateTop 1.5s}@keyframes animateTop{from{transform: translateY(-200%);} to{transform: translateY(0%);}}
-.w3-button{font-size:large;border:none;display:inline-block;padding:8px 16px;vertical-align:middle;overflow:hidden;margin:0.5em;
+.w3-button{font-size:1.2rem;border:none;display:inline-block;padding:8px 16px;vertical-align:middle;overflow:hidden;margin:0.5em;
     text-decoration:none;color:inherit;background-color:inherit;text-align:center;cursor:pointer;white-space:nowrap}
-.w3-button:hover {color:#000!important;background-color:#ccc!important;opacity:0.6;}
+.w3-button:hover {color:#000!important;background-color:#CCC!important;opacity:0.6;}
 .w3-button:disabled{cursor:not-allowed;opacity:0.3;}
 .w3-button-border{border:1px solid darkgray}
 .w3-card-4{box-shadow:0 4px 10px 0 rgba(0,0,0,0.4),0 4px 20px 0 rgba(0,0,0,0.3);}
@@ -478,12 +469,12 @@ menu-dropdown-hover {
 .w3-panel{margin-top:16px;margin-bottom:16px}
 .w3-display-topright{position:absolute;right:0;top:0}
 .w3-display-middle{position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);}
-.w3-modal-content{margin:auto;background-color:#fff;position:relative;padding:0;outline:0;max-width: 500px;max-height: 90vh;overflow-y: auto;z-index:8;}
+.w3-modal-content{margin:auto;background-color:#FFF;position:relative;padding:0;outline:0;max-width: 500px;max-height: 90vh;overflow-y: auto;z-index:8;}
 .w3-modal{display:none;padding-top:7vh;position:fixed;left:0;top:0;width:100%;height:100%;overflow:auto;z-index:7;background-color:rgb(0,0,0);background-color:rgba(0,0,0,0.3)}
+ 
+/*** Media (screen < 660) ***/
 
-/*** Media (screen < 600) ***/
-
-@media screen and (max-width: 599px) {
+@media screen and (max-width: 659px) {
 
     input,
     select {
@@ -554,7 +545,8 @@ menu-dropdown-hover {
     }
 
     .w3-modal-content {
-        max-width: 380px;
+        max-width: 360px;
+        font-size: 1rem;
     }
 }
 
@@ -567,13 +559,13 @@ menu-dropdown-hover {
     }
 
     #registration tr {
-        width: 16em;
+        width: 17em;
     }
 }
 
-/*** Media (screen >= 600) ***/
+/*** Media (screen >= 660) ***/
 
-@media screen and (min-width: 600px) {
+@media screen and (min-width: 660px) {
 
     table {
         border-spacing: 0 0.8em;
@@ -610,22 +602,22 @@ menu-dropdown-hover {
 @media screen and (max-width: 799px) {
 
     body {
-        font-size: large;
+        font-size: 1.2rem;
     }
 
     input, select, td, th {
-        font-size: large;
+        font-size: 1.2rem;
     }
 
     #menu-dropdown-content {
-        font-size: large;
+        font-size: 1.2rem;
         min-width: 235px;
     }
 
     .status-light {
         height: 1.3em;
         width: 1.3em;
-        margin-top: 5px;
+        margin-top: 0.3em;
     }
 }
 
@@ -657,7 +649,7 @@ menu-dropdown-hover {
     width: var(--card-width);
     height: var(--card-height);
     border-radius: 10%;
-    border: 5px solid whitesmoke;
+    border: 0.3em solid whitesmoke;
     transform-origin: center;
     transition: transform 0.5s ease;
     animation-duration: var(--shuffle-duration);
@@ -719,7 +711,7 @@ menu-dropdown-hover {
 #barFill {
     height: 25px;
     width: 100%;
-    background: teal; /*#9C27B0;*/
+    background: teal; /*#008080;*/
     transform-origin: center;
 }
 

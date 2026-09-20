@@ -1,12 +1,12 @@
 ﻿'use strict';
 
-const gc_version = '5.3.0';
+const gc_version = '5.3.2';
 const gc_author = 'By Geir Ove Nesvik';
 const gc_max_ticket_num = 99999;    // A ticket number can't be larger than this number
 const gc_tooManyTickets = 99999;    // A warning will be raised if the number of tickets is greater than this value
 const gc_reset_warning = 'This will end the current session and reset the app.';
 const splashHTML = `
-    <div id="splash-screen" class="w3-card-4 color-slate-teal splash-font">
+    <div id="splash-screen" class="w3-card-4 color-teal splash-font">
         <div class="w3-display-middle">
         <div class="splash-line1">Tombola</div>
         <div class="splash-line2">Draw</div>
@@ -40,13 +40,8 @@ let gv_grandTotal;
 let gv_color_index;
 let gv_countdown;
 
-let slider = document.querySelector('#suspension-time');
-let suspensionTime = slider.value;
-
-// Update value whenever the slider moves
-slider.addEventListener('input', () => {
-    suspensionTime = slider.value;
-});
+let timeSlider = document.querySelector('#suspension-time');
+let gv_suspensionTime;
 
 /* Some helper functions */
 
@@ -102,15 +97,19 @@ function toggleElement(condition, selector) {
 
 document.querySelector('#version').textContent = gc_version;
 document.querySelector('#author').textContent = gc_author;
-document.querySelector('#rangeValue').textContent = parseFloat(suspensionTime).toFixed(1);
+
+gv_suspensionTime = getSuspensionTime();
+document.querySelector('#rangeValue').textContent = parseFloat(gv_suspensionTime).toFixed(1);
 
 const select = document.querySelector('.select-letter');
 
-for (let i = 65; i <= 90; i++) {
-    const letter = String.fromCharCode(i); // ASCII codes for A-Z
-    const option = document.createElement("option");
-    option.text = letter;
-    select.add(option);
+if (select) {
+    for (let i = 65; i <= 90; i++) {
+        const letter = String.fromCharCode(i); // ASCII codes for A-Z
+        const option = document.createElement("option");
+        option.text = letter;
+        select.add(option);
+    }
 }
 
 resetApp();
@@ -126,7 +125,7 @@ function revealWinner () {
     copyComputedStyle('#ticket-text', '#menu-icon', 'color');
 
     const html = document.documentElement;
-    const startVel = Math.min(html.clientHeight, html.clientWidth)/20;
+    const startVel = Math.min(html.clientHeight, html.clientWidth) / 20;
 
     if (typeof confetti === "function") {
         // 🎉 Let the confetti fly!
@@ -134,7 +133,7 @@ function revealWinner () {
             particleCount: 200,
             spread: 360,
             startVelocity: startVel,
-            gravity: 0.8,
+            gravity: 0.4,
             ticks: 250,
             scalar: 1.8,
             drift: 0,
@@ -264,7 +263,6 @@ function countTickets(element) {
 
     const cur_first_val = Number(cur_first_elem.value);
     const cur_last_val = Number(cur_last_elem.value);
-    console.debug(`cur_first_val = ${cur_first_elem.value}, cur_last_val = ${cur_last_elem.value}`); // Debug
     const ticket_num = (cur_first_val > 0 && cur_last_val >= cur_first_val) ? cur_last_val - cur_first_val + 1 : 0;
 
     setText('.num-tickets', ticket_num, cur_row);
@@ -318,11 +316,12 @@ function drawTicket() {
     
     if (nTicketsLeft > 0) {
         
-        startCountdown(suspensionTime);
+        gv_suspensionTime = getSuspensionTime();
+        startCountdown(gv_suspensionTime);
 
         document.querySelector('#menu-icon').style.color = 'black';
         leaveElement('#present-winner');
-        (suspensionTime > 0) ? enterElement('#spinner-panel', 'flex') : leaveElement('#spinner-panel');
+        (gv_suspensionTime > 0) ? enterElement('#spinner-panel', 'flex') : leaveElement('#spinner-panel');
 
         const winner = Object.keys(gv_all_tickets)[Math.floor(Math.random() * nTicketsLeft)];
         gv_drawHistory.push(gv_all_tickets[winner]);
@@ -350,7 +349,7 @@ function drawTicket() {
         leaveElement('#repetition');
 
         // Reveal winner when the spinner stops
-        gv_countdown = setTimeout(revealWinner, suspensionTime*1000 + io_delay, '#ticket-text');
+        gv_countdown = setTimeout(revealWinner, gv_suspensionTime*1000 + io_delay, '#ticket-text');
 
     }
 }
@@ -404,10 +403,10 @@ function endReview() {
 
 }
 
-// Set the dislosure time i.e. the spinning time of the spinner
+// Set the dislosure time i.e. the spinning duration of the spinner
 function setSuspensionTime() {
 
-    ////suspensionTime = slider.value;
+    gv_suspensionTime = getSuspensionTime();
     // Closing modal page
     leaveElement('#setSuspensionTime');
 
@@ -416,12 +415,17 @@ function setSuspensionTime() {
 // Reset the dislosure time
 function resetSuspensionTime() {
 
-    document.querySelector('#suspension-time').value = suspensionTime;
-    setText('#rangeValue', parseFloat(suspensionTime).toFixed(1));
+    document.querySelector('#suspension-time').value = gv_suspensionTime;
+    setText('#rangeValue', parseFloat(gv_suspensionTime).toFixed(1));
 
     // Close page
     leaveElement('#setSuspensionTime');
 
+}
+
+// Get the current disclosure time
+function getSuspensionTime() {
+  return Number(timeSlider.value);
 }
 
 // Raise warning messages
@@ -696,11 +700,9 @@ function traverseHistory(incr) {
     gv_historyIndex += incr;
 
     // Activate or deactivate the 'Previous' button
-    //document.querySelector('#prev').disabled = (gv_historyIndex == 0) ? true : false;
     document.querySelector('#prev').style.visibility = (gv_historyIndex == 0) ? 'hidden' : 'visible';
 
     // Activate or deactivate the 'Next' button
-    //document.querySelector('#next').disabled = (gv_historyIndex == gv_drawHistory.length - 1) ? true : false;
     document.querySelector('#next').style.visibility = (gv_historyIndex == gv_drawHistory.length - 1) ? 'hidden' : 'visible';
     
     document.querySelector('#present-winner').className = gv_drawHistory[gv_historyIndex][0];
@@ -715,17 +717,17 @@ function traverseHistory(incr) {
 }
 
 // Events
-slider.oninput = function() {
-    setText('#slider', this.value);
-    document.querySelector('#rangeValue').textContent = parseFloat(slider.value).toFixed(1);
+timeSlider.oninput = function() {
+    setText('#time_slider', this.value);
+    document.querySelector('#rangeValue').textContent = parseFloat(timeSlider.value).toFixed(1);
 }
 
 document.querySelector('tbody').addEventListener('change', evalRegistationEvent);
 document.querySelector('tbody').addEventListener('click', evalRegistationEvent);
 document.querySelector('#registrationButtons').addEventListener('click', evalRegistationButtonEvent);
-document.querySelector('#ticketButtons').addEventListener('click', evalDrawingEvents);
+document.querySelector('#ticketButtons').addEventListener('click', evalDrawingButtonEvents);
 document.addEventListener('click', evalModalEvent);
-document.addEventListener('keyup', evalShortcut, true);
+document.addEventListener('keydown', evalShortcutKeys, true);
 
 // The debounce function assures smooth performance and reduce redundant calculations as somebody types
 function debounce(func, delay = 300) {
@@ -803,7 +805,7 @@ function evalModalEvent(event) {
     }
 }
 
-function evalDrawingEvents(event) {
+function evalDrawingButtonEvents(event) {
     switch (event.target.id) {
         case 'draw':
             drawTicket();
@@ -847,7 +849,7 @@ function highlightActiveMode(currentMode) {
 }
 
 // Key events
-function evalShortcut(event) {
+function evalShortcutKeys(event) {
 
     // Resetting mode
     if (document.querySelector('#reset').style.display == 'block') {
@@ -881,6 +883,7 @@ function evalShortcut(event) {
 
     // Drawing mode
     if (document.querySelector('#present-winner').style.display == 'flex') {
+     
         switch (event.key) {
             case 'Enter': // draw
             case ' ': {
@@ -902,7 +905,6 @@ function evalShortcut(event) {
                 traverseHistory(-1);
                 break;
             } 
-            
             case 'ArrowRight': { // next
                 traverseHistory(1);
                 break;
@@ -930,8 +932,6 @@ const spinnerColors = Array.from(
         return rgbToHex(window.getComputedStyle(el).backgroundColor);
     }
 );
-
-console.debug(spinnerColors);
 
 /* ─── Register ServiceWorker ─── */
 if ('serviceWorker' in navigator) {
